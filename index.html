@@ -385,13 +385,17 @@ function switchView(v) {
   document.getElementById("month-view").className = "month-view" + (v === "month" ? " show" : "");
   document.getElementById("btn-week").className = "view-btn" + (v === "week" ? " active" : "");
   document.getElementById("btn-month").className = "view-btn" + (v === "month" ? " active" : "");
-  if (v === "month") renderMonth();
+  if (v === "month") {
+    if (state.stravaToken) fetchStravaMonth(currentMonthOffset, renderMonth);
+    else renderMonth();
+  }
 }
 
 // ── month view ────────────────────────────────────────────────────────────────
 function shiftMonth(dir) {
   currentMonthOffset += dir;
-  renderMonth();
+  if (state.stravaToken) fetchStravaMonth(currentMonthOffset, renderMonth);
+  else renderMonth();
 }
 
 function renderMonth() {
@@ -603,6 +607,77 @@ function fetchStravaActivities() {
     document.getElementById("week-hint").textContent = "synced from Strava";
   })
   .catch(function(e) { console.warn("Strava fetch error", e); });
+}
+
+function fetchStravaMonth(offset, callback) {
+  var now = new Date();
+  var y = now.getFullYear();
+  var m = now.getMonth() + offset;
+  while (m < 0) { m += 12; y--; }
+  while (m > 11) { m -= 12; y++; }
+
+  var afterTs = Math.floor(new Date(y, m, 1, 0, 0, 0).getTime() / 1000);
+  var beforeTs = Math.floor(new Date(y, m+1, 1, 0, 0, 0).getTime() / 1000);
+
+  document.getElementById("month-title").textContent = "Loading...";
+
+  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + afterTs + "&before=" + beforeTs + "&per_page=60", {
+    headers: { "Authorization": "Bearer " + state.stravaToken }
+  })
+  .then(function(r) {
+    if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; }
+    return r.json();
+  })
+  .then(function(activities) {
+    if (!activities) return;
+    // merge rides into history by week, keeping existing gym data
+    var h = loadHistory();
+    // clear strava rides for all weeks in this month, then re-populate
+    // collect all week keys that fall in this month
+    var weekKeys = {};
+    for (var day = 1; day <= new Date(y, m+1, 0).getDate(); day++) {
+      var wk = getWeekKey(new Date(y, m, day));
+      weekKeys[wk] = true;
+    }
+    // for each week in this month, wipe strava rides only
+    Object.keys(weekKeys).forEach(function(wk) {
+      var isCurrentWeek = wk === state.weekKey;
+      var target = isCurrentWeek ? state : (h[wk] = h[wk] || { completedDays: [false,false,false,false], rides: [null,null,null,null,null,null,null] });
+      if (!target.rides) target.rides = [null,null,null,null,null,null,null];
+      // clear only strava-sourced rides
+      for (var i = 0; i < 7; i++) {
+        if (target.rides[i] && target.rides[i].fromStrava) target.rides[i] = null;
+      }
+    });
+
+    activities.forEach(function(act) {
+      if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
+      var d = new Date(act.start_date_local);
+      var wk = getWeekKey(d);
+      var dow = d.getDay();
+      var idx = dow === 0 ? 6 : dow - 1;
+      var distMi = parseFloat((act.distance / 1609.34).toFixed(1));
+      var durMin = Math.round(act.moving_time / 60);
+      var actType = act.sport_type || act.type || "Ride";
+
+      var isCurrentWeek = wk === state.weekKey;
+      var target = isCurrentWeek ? state : (h[wk] = h[wk] || { completedDays: [false,false,false,false], rides: [null,null,null,null,null,null,null] });
+      if (!target.rides) target.rides = [null,null,null,null,null,null,null];
+
+      if (!target.rides[idx]) {
+        target.rides[idx] = { dist: distMi, dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true };
+      } else {
+        target.rides[idx].dist = parseFloat((target.rides[idx].dist + distMi).toFixed(1));
+        target.rides[idx].dur += durMin;
+        target.rides[idx].name += " + 1 more";
+      }
+    });
+
+    saveHistory(h);
+    saveState();
+    if (callback) callback();
+  })
+  .catch(function(e) { console.warn("Strava month fetch error", e); if (callback) callback(); });
 }
 
 function updateStravaBar() {
