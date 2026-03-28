@@ -366,17 +366,18 @@ function fetchStravaActivities() {
     activities.forEach(function(act) {
       if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
       var d = new Date(act.start_date_local);
-      var dow = d.getDay(); // 0=sun,1=mon...
-      // map to our 0=mon..6=sun
+      var dow = d.getDay();
       var idx = dow === 0 ? 6 : dow - 1;
       var distMi = (act.distance / 1609.34).toFixed(1);
       var durMin = Math.round(act.moving_time / 60);
-      // accumulate if multiple rides same day
+      var actType = act.sport_type || act.type || "Ride";
       if (!state.rides[idx]) {
-        state.rides[idx] = { dist: parseFloat(distMi), dur: durMin, name: act.name, fromStrava: true };
+        state.rides[idx] = { dist: parseFloat(distMi), dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true };
       } else {
         state.rides[idx].dist = parseFloat((state.rides[idx].dist + parseFloat(distMi)).toFixed(1));
         state.rides[idx].dur += durMin;
+        // keep first activity's id/type for link, append name
+        state.rides[idx].name += " + 1 more";
       }
     });
     saveState();
@@ -578,18 +579,28 @@ function renderWeek() {
 
     // strava icon indicator
     var stravaTag = (ride && ride.fromStrava)
-      ? '<div class="week-box-meta" style="color:#FC4C02;opacity:0.9">strava</div>'
+      ? '<div class="week-box-meta" style="color:#FC4C02;opacity:0.9">' + (ride.type ? ride.type.replace("Virtual","Virtual ") : "Ride") + '</div>'
+      : "";
+
+    var distTag = (ride && ride.dist)
+      ? '<div class="week-box-label" style="color:' + labelColor + ';font-size:10px;font-weight:500">' + ride.dist + ' mi</div>'
       : "";
 
     cell.innerHTML =
       '<div class="week-day-name">' + d + '</div>' +
-      '<div class="week-box" style="background:' + bg + ';border-color:' + borderColor + '">' +
+      '<div class="week-box" style="background:' + bg + ';border-color:' + borderColor + (ride && ride.fromStrava && ride.id ? ';cursor:pointer' : '') + '">' +
         '<div class="week-box-label" style="color:' + labelColor + '">' + labelText + '</div>' +
-        metaHtml + stravaTag +
+        distTag + stravaTag +
       '</div>';
 
     if (clickable) {
       cell.addEventListener("click", (function(idx) { return function() { openModal(idx); }; })(i));
+    }
+    if (ride && ride.fromStrava && ride.id) {
+      cell.querySelector(".week-box").addEventListener("click", function(e) {
+        e.stopPropagation();
+        window.open("https://www.strava.com/activities/" + ride.id, "_blank");
+      });
     }
 
     grid.appendChild(cell);
