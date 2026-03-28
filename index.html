@@ -9,6 +9,20 @@
   body { background: #111; min-height: 100vh; padding: 24px 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
   .card { background: #fff; border-radius: 20px; padding: 20px 16px; color: #111; max-width: 480px; margin: 0 auto; }
 
+  /* view toggle */
+  .view-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
+  .view-btn { flex: 1; padding: 7px; border-radius: 8px; border: 0.5px solid #e5e5e5; background: #fafafa; font-size: 12px; font-weight: 500; color: #888; cursor: pointer; }
+  .view-btn.active { background: #111; color: #fff; border-color: #111; }
+
+  /* strava bar */
+  .strava-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 10px 12px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; }
+  .strava-status { font-size: 12px; color: #888; display: flex; align-items: center; gap: 6px; }
+  .strava-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
+  .strava-dot.connected { background: #FC4C02; }
+  .strava-btn { font-size: 11px; font-weight: 500; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; background: #FC4C02; color: #fff; }
+  .strava-btn.disconnect { background: none; border: 0.5px solid #ddd; color: #888; }
+
+  /* day selector */
   .day-selector { display: flex; gap: 8px; margin-bottom: 20px; }
   .day-btn { flex: 1; padding: 10px 4px; border-radius: 10px; cursor: pointer; text-align: center; position: relative; border: 0.5px solid #e5e5e5; background: #fafafa; }
   .day-btn.active { border-width: 1.5px; }
@@ -34,7 +48,7 @@
   .checkbox svg { display: none; }
   .checkbox.checked svg { display: block; }
   .ex-content { flex: 1; min-width: 0; }
-  .ex-name { font-size: 14px; font-weight: 500; color: #111; }
+  .ex-name { font-size: 14px; font-weight: 500; }
   .ex-row.done .ex-name { text-decoration: line-through; opacity: 0.7; }
   .eq-pill { font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 20px; margin-left: 5px; vertical-align: middle; }
   .eq-band { background: #EEEDFE; color: #3C3489; }
@@ -47,6 +61,7 @@
   .complete-title { font-size: 14px; font-weight: 500; }
   .complete-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
 
+  /* week overview */
   .week-overview { margin-top: 20px; padding: 14px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; }
   .week-overview-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .week-label { font-size: 11px; font-weight: 500; color: #aaa; letter-spacing: 0.05em; }
@@ -57,14 +72,34 @@
   .week-box-label { font-size: 9px; font-weight: 500; }
   .week-box-meta { font-size: 8px; }
 
-  /* Strava bar */
-  .strava-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 10px 12px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; }
-  .strava-status { font-size: 12px; color: #888; display: flex; align-items: center; gap: 6px; }
-  .strava-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
-  .strava-dot.connected { background: #FC4C02; }
-  .strava-btn { font-size: 11px; font-weight: 500; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; background: #FC4C02; color: #fff; }
-  .strava-btn.disconnect { background: none; border: 0.5px solid #ddd; color: #888; }
+  /* month view */
+  .month-view { display: none; }
+  .month-view.show { display: block; }
+  .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
+  .month-nav-btn { background: none; border: 0.5px solid #e5e5e5; border-radius: 8px; width: 30px; height: 30px; cursor: pointer; font-size: 14px; color: #555; display: flex; align-items: center; justify-content: center; }
+  .month-title { font-size: 15px; font-weight: 500; color: #111; }
+  .month-stats { display: flex; gap: 8px; margin-bottom: 16px; }
+  .stat-box { flex: 1; padding: 10px 12px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; text-align: center; }
+  .stat-val { font-size: 20px; font-weight: 500; color: #111; }
+  .stat-label { font-size: 10px; color: #aaa; margin-top: 2px; }
+  .streak-val { color: #FC4C02; }
+  .cal-header { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; margin-bottom: 4px; }
+  .cal-dow { font-size: 9px; font-weight: 500; color: #aaa; text-align: center; padding: 2px 0; }
+  .cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+  .cal-cell { aspect-ratio: 1; border-radius: 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; border: 0.5px solid transparent; font-size: 10px; font-weight: 500; color: #ccc; background: #fafafa; position: relative; }
+  .cal-cell.has-date { color: #888; border-color: #eee; }
+  .cal-cell.gym-done { background: #111; color: #fff; border-color: #111; }
+  .cal-cell.ride-done { border-width: 1.5px; }
+  .cal-cell.both-done { background: #111; color: #fff; }
+  .cal-cell.today { box-shadow: 0 0 0 1.5px #111; }
+  .cal-cell.today.gym-done { box-shadow: 0 0 0 1.5px #555; }
+  .cal-dot-row { display: flex; gap: 2px; margin-top: 2px; }
+  .cal-dot { width: 4px; height: 4px; border-radius: 50%; }
+  .cal-legend { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+  .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #888; }
+  .legend-swatch { width: 10px; height: 10px; border-radius: 3px; }
 
+  /* modals */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.show { display: flex; }
   .modal { background: #fff; border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; }
@@ -78,8 +113,6 @@
   .modal-save { flex: 1; padding: 9px; border-radius: 8px; border: none; background: #111; color: #fff; font-size: 13px; font-weight: 500; cursor: pointer; }
   .modal-cancel { padding: 9px 14px; border-radius: 8px; border: 0.5px solid #ddd; background: none; color: #888; font-size: 13px; cursor: pointer; }
   .modal-clear { padding: 9px 14px; border-radius: 8px; border: 0.5px solid #fcc; background: none; color: #c55; font-size: 13px; cursor: pointer; }
-
-  /* Secret modal */
   .secret-note { font-size: 11px; color: #888; margin-top: 10px; line-height: 1.5; }
   .secret-note a { color: #FC4C02; }
 </style>
@@ -87,8 +120,14 @@
 <body>
 <div class="card">
 
-  <!-- Strava bar -->
-  <div class="strava-bar" id="strava-bar">
+  <!-- view toggle -->
+  <div class="view-toggle">
+    <button class="view-btn active" id="btn-week" onclick="switchView('week')">This week</button>
+    <button class="view-btn" id="btn-month" onclick="switchView('month')">Month</button>
+  </div>
+
+  <!-- strava bar -->
+  <div class="strava-bar">
     <div class="strava-status">
       <div class="strava-dot" id="strava-dot"></div>
       <span id="strava-status-text">Not connected to Strava</span>
@@ -96,30 +135,64 @@
     <button class="strava-btn" id="strava-action-btn" onclick="stravaAction()">Connect</button>
   </div>
 
-  <div class="day-selector" id="day-selector"></div>
-  <div class="header">
-    <div>
-      <div class="header-focus" id="hdr-focus"></div>
-      <div class="header-sub" id="hdr-sub"></div>
+  <!-- week view -->
+  <div id="week-view">
+    <div class="day-selector" id="day-selector"></div>
+    <div class="header">
+      <div>
+        <div class="header-focus" id="hdr-focus"></div>
+        <div class="header-sub" id="hdr-sub"></div>
+      </div>
+      <button class="reset-btn" onclick="resetDay()">Reset</button>
     </div>
-    <button class="reset-btn" onclick="resetDay()">Reset</button>
-  </div>
-  <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
-  <div class="ex-list" id="ex-list"></div>
-  <div class="complete-msg" id="complete-msg">
-    <div class="complete-title" id="complete-title"></div>
-    <div class="complete-sub" id="complete-sub"></div>
-  </div>
-  <div class="week-overview">
-    <div class="week-overview-hdr">
-      <div class="week-label">WEEK OVERVIEW</div>
-      <div id="week-hint" style="font-size:10px;color:#aaa;">tap ride days to log</div>
+    <div class="progress-track"><div class="progress-bar" id="progress-bar"></div></div>
+    <div class="ex-list" id="ex-list"></div>
+    <div class="complete-msg" id="complete-msg">
+      <div class="complete-title" id="complete-title"></div>
+      <div class="complete-sub" id="complete-sub"></div>
     </div>
-    <div class="week-grid" id="week-grid"></div>
+    <div class="week-overview">
+      <div class="week-overview-hdr">
+        <div class="week-label">WEEK OVERVIEW</div>
+        <div id="week-hint" style="font-size:10px;color:#aaa;">tap ride days to log</div>
+      </div>
+      <div class="week-grid" id="week-grid"></div>
+    </div>
   </div>
+
+  <!-- month view -->
+  <div class="month-view" id="month-view">
+    <div class="month-nav">
+      <button class="month-nav-btn" onclick="shiftMonth(-1)">&#8249;</button>
+      <div class="month-title" id="month-title"></div>
+      <button class="month-nav-btn" onclick="shiftMonth(1)">&#8250;</button>
+    </div>
+    <div class="month-stats">
+      <div class="stat-box">
+        <div class="stat-val" id="stat-gym-days">0</div>
+        <div class="stat-label">gym sessions</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val" id="stat-ride-days">0</div>
+        <div class="stat-label">rides logged</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-val streak-val" id="stat-streak">0</div>
+        <div class="stat-label">week streak</div>
+      </div>
+    </div>
+    <div class="cal-header" id="cal-header"></div>
+    <div class="cal-grid" id="cal-grid"></div>
+    <div class="cal-legend">
+      <div class="legend-item"><div class="legend-swatch" style="background:#111"></div> Gym done</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#E1F5EE;border:1.5px solid #1D9E75"></div> Ride logged</div>
+      <div class="legend-item"><div class="legend-swatch" style="background:#FC4C02;border-radius:50%"></div> Strava ride</div>
+    </div>
+  </div>
+
 </div>
 
-<!-- Ride log modal (manual) -->
+<!-- ride modal -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title" id="modal-title"></div>
@@ -142,7 +215,7 @@
   </div>
 </div>
 
-<!-- Strava secret modal -->
+<!-- secret modal -->
 <div class="modal-overlay" id="secret-modal">
   <div class="modal">
     <div class="modal-title">Enter your Client Secret</div>
@@ -153,7 +226,7 @@
         <input class="field-input" id="input-secret" type="password" placeholder="Paste your client secret here">
       </div>
     </div>
-    <p class="secret-note">Find it at <a href="https://www.strava.com/settings/api" target="_blank">strava.com/settings/api</a>. It is never sent anywhere except directly to Strava's servers.</p>
+    <p class="secret-note">Find it at <a href="https://www.strava.com/settings/api" target="_blank">strava.com/settings/api</a>. Never sent anywhere except directly to Strava.</p>
     <br>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeSecretModal()">Cancel</button>
@@ -163,15 +236,11 @@
 </div>
 
 <script>
-// ─── CONFIG ──────────────────────────────────────────────────────────────────
 var STRAVA_CLIENT_ID = "217088";
 var REDIRECT_URI = "https://nastalgia.github.io/workout-dashboard/";
-// ─────────────────────────────────────────────────────────────────────────────
 
 var DAYS = [
-  {
-    day: "Monday", label: "Day 1", focus: "Glute activation",
-    color: "#1D9E75", lightColor: "#E1F5EE", textColor: "#085041",
+  { day: "Monday", label: "Day 1", focus: "Glute activation", color: "#1D9E75", lightColor: "#E1F5EE", textColor: "#085041",
     exercises: [
       { name: "Glute bridge", sets: 3, reps: "15", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/49/glute-bridge/" },
       { name: "Single-leg bridge", sets: 3, reps: "10/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/145/glute-bridge-single-leg-progression/" },
@@ -180,9 +249,7 @@ var DAYS = [
       { name: "Donkey kick", sets: 3, reps: "12/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/58/quadruped-hip-extension/" }
     ]
   },
-  {
-    day: "Tuesday", label: "Day 2", focus: "Core stability",
-    color: "#534AB7", lightColor: "#EEEDFE", textColor: "#3C3489",
+  { day: "Tuesday", label: "Day 2", focus: "Core stability", color: "#534AB7", lightColor: "#EEEDFE", textColor: "#3C3489",
     exercises: [
       { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://blog.nasm.org/dead-bug-exercise" },
       { name: "Forearm plank", sets: 3, reps: "30-45s", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/20/forearm-plank/" },
@@ -191,9 +258,7 @@ var DAYS = [
       { name: "Bird dog", sets: 3, reps: "8/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/14/bird-dog/" }
     ]
   },
-  {
-    day: "Wednesday", label: "Day 3", focus: "Hip flexor + mobility",
-    color: "#D85A30", lightColor: "#FAECE7", textColor: "#712B13",
+  { day: "Wednesday", label: "Day 3", focus: "Hip flexor + mobility", color: "#D85A30", lightColor: "#FAECE7", textColor: "#712B13",
     exercises: [
       { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://precisionmovement.coach/90-90-hip-stretch/" },
       { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://backmusclesolutions.com/blogs/the-ql-blawg/psoas-march" },
@@ -202,9 +267,7 @@ var DAYS = [
       { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://library.theprehabguys.com/" }
     ]
   },
-  {
-    day: "Thursday", label: "Day 4", focus: "Single-leg strength",
-    color: "#3B6D11", lightColor: "#EAF3DE", textColor: "#27500A",
+  { day: "Thursday", label: "Day 4", focus: "Single-leg strength", color: "#3B6D11", lightColor: "#EAF3DE", textColor: "#27500A",
     exercises: [
       { name: "Bulgarian split squat", sets: 3, reps: "8/side", equipment: "KB", url: "https://blog.nasm.org/bulgarian-split-squat" },
       { name: "Single-leg RDL", sets: 3, reps: "8/side", equipment: "KB", url: "https://www.acefitness.org/resources/everyone/exercise-library/357/single-leg-romanian-deadlift/" },
@@ -217,9 +280,28 @@ var DAYS = [
 
 var WEEK_DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 var RIDE_DAYS = [0,1,2,3,4,5];
-var STORAGE_KEY = "cycling_workout_v3";
+var STORAGE_KEY = "cycling_workout_v4";
+var HISTORY_KEY = "cycling_history_v1";
 var modalDayIndex = -1;
+var currentMonthOffset = 0; // 0 = current month
 
+// ── week key helpers ──────────────────────────────────────────────────────────
+function getWeekKey(date) {
+  var d = date ? new Date(date) : new Date();
+  var day = d.getDay();
+  var diff = (day === 0) ? -6 : 1 - day;
+  var monday = new Date(d);
+  monday.setDate(d.getDate() + diff);
+  return monday.getFullYear() + "-" + (monday.getMonth()+1) + "-" + monday.getDate();
+}
+
+function getTodayIndex() {
+  var map = {1:0,2:1,3:2,4:3};
+  var d = new Date().getDay();
+  return map[d] !== undefined ? map[d] : 0;
+}
+
+// ── state ─────────────────────────────────────────────────────────────────────
 function loadState() {
   try {
     var raw = localStorage.getItem(STORAGE_KEY);
@@ -229,6 +311,18 @@ function loadState() {
       if (!s.stravaToken) s.stravaToken = null;
       if (!s.stravaSecret) s.stravaSecret = null;
       if (!s.stravaAthlete) s.stravaAthlete = null;
+      var currentWeek = getWeekKey();
+      if (s.weekKey && s.weekKey !== currentWeek) {
+        // archive outgoing week before reset
+        archiveWeek(s);
+        s.checked = DAYS.map(function(d) { return d.exercises.map(function() { return false; }); });
+        s.completedDays = [false,false,false,false];
+        s.rides = [null,null,null,null,null,null,null];
+        s.activeDay = getTodayIndex();
+        s.weekKey = currentWeek;
+      } else if (!s.weekKey) {
+        s.weekKey = currentWeek;
+      }
       return s;
     }
   } catch(e) {}
@@ -237,9 +331,8 @@ function loadState() {
     checked: DAYS.map(function(d) { return d.exercises.map(function() { return false; }); }),
     completedDays: [false,false,false,false],
     rides: [null,null,null,null,null,null,null],
-    stravaToken: null,
-    stravaSecret: null,
-    stravaAthlete: null
+    stravaToken: null, stravaSecret: null, stravaAthlete: null,
+    weekKey: getWeekKey()
   };
 }
 
@@ -247,121 +340,248 @@ function saveState() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
 }
 
-function getTodayIndex() {
-  var map = {1:0,2:1,3:2,4:3};
-  var d = new Date().getDay();
-  return map[d] !== undefined ? map[d] : 0;
+// ── history ───────────────────────────────────────────────────────────────────
+// history = { "YYYY-M-D": { completedDays:[bool,bool,bool,bool], rides:[...] }, ... }
+// keyed by Monday date of that week
+
+function loadHistory() {
+  try {
+    var raw = localStorage.getItem(HISTORY_KEY);
+    if (raw) return JSON.parse(raw);
+  } catch(e) {}
+  return {};
+}
+
+function saveHistory(h) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); } catch(e) {}
+}
+
+function archiveWeek(s) {
+  if (!s.weekKey) return;
+  var h = loadHistory();
+  h[s.weekKey] = {
+    completedDays: s.completedDays.slice(),
+    rides: s.rides.slice()
+  };
+  saveHistory(h);
+}
+
+// get data for a given date — either from live state (this week) or history
+function getWeekData(weekKey) {
+  if (weekKey === state.weekKey) {
+    return { completedDays: state.completedDays, rides: state.rides };
+  }
+  var h = loadHistory();
+  return h[weekKey] || null;
 }
 
 var state = loadState();
 
-// ─── STRAVA OAUTH ─────────────────────────────────────────────────────────────
+// ── view toggle ───────────────────────────────────────────────────────────────
+var currentView = "week";
+function switchView(v) {
+  currentView = v;
+  document.getElementById("week-view").style.display = v === "week" ? "block" : "none";
+  document.getElementById("month-view").className = "month-view" + (v === "month" ? " show" : "");
+  document.getElementById("btn-week").className = "view-btn" + (v === "week" ? " active" : "");
+  document.getElementById("btn-month").className = "view-btn" + (v === "month" ? " active" : "");
+  if (v === "month") renderMonth();
+}
 
+// ── month view ────────────────────────────────────────────────────────────────
+function shiftMonth(dir) {
+  currentMonthOffset += dir;
+  renderMonth();
+}
+
+function renderMonth() {
+  var now = new Date();
+  var y = now.getFullYear();
+  var m = now.getMonth() + currentMonthOffset;
+  // normalise
+  while (m < 0) { m += 12; y--; }
+  while (m > 11) { m -= 12; y++; }
+
+  var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+  document.getElementById("month-title").textContent = monthNames[m] + " " + y;
+
+  var firstDay = new Date(y, m, 1);
+  var lastDay = new Date(y, m+1, 0);
+  var today = new Date(); today.setHours(0,0,0,0);
+
+  // calendar starts Monday
+  var startDow = firstDay.getDay(); // 0=sun
+  var offset = startDow === 0 ? 6 : startDow - 1;
+
+  // build header
+  var hdr = document.getElementById("cal-header");
+  hdr.innerHTML = "";
+  ["M","T","W","T","F","S","S"].forEach(function(d) {
+    var el = document.createElement("div");
+    el.className = "cal-dow";
+    el.textContent = d;
+    hdr.appendChild(el);
+  });
+
+  // gather all week keys in this month
+  var history = loadHistory();
+  // stats counters
+  var gymDaysTotal = 0;
+  var rideDaysTotal = 0;
+
+  // build cells
+  var grid = document.getElementById("cal-grid");
+  grid.innerHTML = "";
+
+  var totalCells = offset + lastDay.getDate();
+  var rows = Math.ceil(totalCells / 7) * 7;
+
+  for (var c = 0; c < rows; c++) {
+    var cell = document.createElement("div");
+    cell.className = "cal-cell";
+
+    var dateNum = c - offset + 1;
+    if (dateNum < 1 || dateNum > lastDay.getDate()) {
+      grid.appendChild(cell);
+      continue;
+    }
+
+    var cellDate = new Date(y, m, dateNum);
+    cellDate.setHours(0,0,0,0);
+    var wk = getWeekKey(cellDate);
+    var dow = cellDate.getDay(); // 0=sun
+    var weekDayIdx = dow === 0 ? 6 : dow - 1; // 0=mon..6=sun
+
+    cell.className = "cal-cell has-date";
+    cell.textContent = dateNum;
+
+    if (cellDate.getTime() === today.getTime()) cell.className += " today";
+
+    // get week data
+    var wd = getWeekData(wk);
+
+    var gymDone = false;
+    var rideDone = false;
+    var isGymDay = weekDayIdx < 4; // mon-thu
+    var isRideDay = weekDayIdx < 6; // mon-sat
+
+    if (wd) {
+      if (isGymDay && wd.completedDays && wd.completedDays[weekDayIdx]) {
+        gymDone = true;
+        gymDaysTotal++;
+      }
+      if (isRideDay && wd.rides && wd.rides[weekDayIdx]) {
+        rideDone = true;
+        rideDaysTotal++;
+      }
+    }
+
+    // dot row
+    var dots = "";
+    if (gymDone) dots += '<div class="cal-dot" style="background:#fff"></div>';
+    if (rideDone) dots += '<div class="cal-dot" style="background:#FC4C02"></div>';
+
+    var dotHtml = (gymDone || rideDone)
+      ? '<div class="cal-dot-row">' + dots + '</div>'
+      : "";
+
+    if (gymDone && rideDone) {
+      cell.className += " gym-done ride-done both-done";
+      cell.style.borderColor = "#FC4C02";
+    } else if (gymDone) {
+      cell.className += " gym-done";
+    } else if (rideDone) {
+      cell.className += " ride-done";
+      cell.style.borderColor = "#1D9E75";
+      cell.style.background = "#E1F5EE";
+      cell.style.color = "#085041";
+    }
+
+    cell.innerHTML = '<div style="font-size:10px;font-weight:500">' + dateNum + '</div>' + dotHtml;
+    grid.appendChild(cell);
+  }
+
+  // streak: count consecutive weeks (ending with current) that had at least 1 gym session
+  var streak = 0;
+  var checkDate = new Date(today);
+  // go back up to 52 weeks
+  for (var w = 0; w < 52; w++) {
+    var wkKey = getWeekKey(checkDate);
+    var wd2 = getWeekData(wkKey);
+    var hadGym = false;
+    if (wd2 && wd2.completedDays) {
+      for (var x = 0; x < 4; x++) { if (wd2.completedDays[x]) { hadGym = true; break; } }
+    }
+    if (hadGym) { streak++; }
+    else if (w > 0) { break; } // allow current week to be in progress
+    checkDate.setDate(checkDate.getDate() - 7);
+  }
+
+  document.getElementById("stat-gym-days").textContent = gymDaysTotal;
+  document.getElementById("stat-ride-days").textContent = rideDaysTotal;
+  document.getElementById("stat-streak").textContent = streak;
+}
+
+// ── strava ────────────────────────────────────────────────────────────────────
 function stravaAction() {
   if (state.stravaToken) {
-    // disconnect
-    state.stravaToken = null;
-    state.stravaSecret = null;
-    state.stravaAthlete = null;
+    state.stravaToken = null; state.stravaSecret = null; state.stravaAthlete = null;
     state.rides = [null,null,null,null,null,null,null];
-    saveState();
-    updateStravaBar();
-    renderWeek();
+    saveState(); updateStravaBar(); renderWeek();
   } else {
-    // show secret modal first
     document.getElementById("input-secret").value = "";
     document.getElementById("secret-modal").className = "modal-overlay show";
   }
 }
 
-function closeSecretModal() {
-  document.getElementById("secret-modal").className = "modal-overlay";
-}
+function closeSecretModal() { document.getElementById("secret-modal").className = "modal-overlay"; }
 
 function submitSecret() {
   var secret = document.getElementById("input-secret").value.trim();
   if (!secret) { alert("Please enter your Client Secret."); return; }
-  state.stravaSecret = secret;
-  saveState();
-  closeSecretModal();
-  // redirect to Strava OAuth
-  var scope = "activity:read_all";
-  var url = "https://www.strava.com/oauth/authorize" +
-    "?client_id=" + STRAVA_CLIENT_ID +
+  state.stravaSecret = secret; saveState(); closeSecretModal();
+  window.location.href = "https://www.strava.com/oauth/authorize?client_id=" + STRAVA_CLIENT_ID +
     "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
-    "&response_type=code" +
-    "&approval_prompt=auto" +
-    "&scope=" + scope;
-  window.location.href = url;
+    "&response_type=code&approval_prompt=auto&scope=activity:read_all";
 }
 
 function handleOAuthCallback() {
   var params = new URLSearchParams(window.location.search);
   var code = params.get("code");
   if (!code) return;
-  // clean URL
   window.history.replaceState({}, document.title, window.location.pathname);
-  if (!state.stravaSecret) {
-    alert("Client secret missing — please connect again.");
-    return;
-  }
-  // exchange code for token
+  if (!state.stravaSecret) { alert("Client secret missing — please connect again."); return; }
   fetch("https://www.strava.com/oauth/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      client_id: STRAVA_CLIENT_ID,
-      client_secret: state.stravaSecret,
-      code: code,
-      grant_type: "authorization_code"
-    })
+    method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ client_id: STRAVA_CLIENT_ID, client_secret: state.stravaSecret, code: code, grant_type: "authorization_code" })
   })
   .then(function(r) { return r.json(); })
   .then(function(data) {
     if (data.access_token) {
       state.stravaToken = data.access_token;
       state.stravaAthlete = data.athlete ? data.athlete.firstname : "Athlete";
-      saveState();
-      updateStravaBar();
-      fetchStravaActivities();
-    } else {
-      alert("Strava auth failed: " + (data.message || "unknown error"));
-    }
+      saveState(); updateStravaBar(); fetchStravaActivities();
+    } else { alert("Strava auth failed: " + (data.message || "unknown error")); }
   })
-  .catch(function(e) { alert("Error connecting to Strava: " + e.message); });
-}
-
-function refreshStravaActivities() {
-  if (!state.stravaToken) return;
-  fetchStravaActivities();
+  .catch(function(e) { alert("Error: " + e.message); });
 }
 
 function fetchStravaActivities() {
-  // get start of current week (Monday)
   var now = new Date();
-  var day = now.getDay(); // 0=sun
+  var day = now.getDay();
   var diff = (day === 0) ? -6 : 1 - day;
-  var monday = new Date(now);
-  monday.setDate(now.getDate() + diff);
-  monday.setHours(0,0,0,0);
+  var monday = new Date(now); monday.setDate(now.getDate() + diff); monday.setHours(0,0,0,0);
   var after = Math.floor(monday.getTime() / 1000);
 
   fetch("https://www.strava.com/api/v3/athlete/activities?after=" + after + "&per_page=30", {
     headers: { "Authorization": "Bearer " + state.stravaToken }
   })
   .then(function(r) {
-    if (r.status === 401) {
-      // token expired
-      state.stravaToken = null;
-      saveState();
-      updateStravaBar();
-      return null;
-    }
+    if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; }
     return r.json();
   })
   .then(function(activities) {
     if (!activities) return;
-    // reset week rides
     state.rides = [null,null,null,null,null,null,null];
     activities.forEach(function(act) {
       if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
@@ -376,12 +596,10 @@ function fetchStravaActivities() {
       } else {
         state.rides[idx].dist = parseFloat((state.rides[idx].dist + parseFloat(distMi)).toFixed(1));
         state.rides[idx].dur += durMin;
-        // keep first activity's id/type for link, append name
         state.rides[idx].name += " + 1 more";
       }
     });
-    saveState();
-    renderWeek();
+    saveState(); renderWeek();
     document.getElementById("week-hint").textContent = "synced from Strava";
   })
   .catch(function(e) { console.warn("Strava fetch error", e); });
@@ -394,22 +612,19 @@ function updateStravaBar() {
   if (state.stravaToken) {
     dot.className = "strava-dot connected";
     txt.textContent = "Connected" + (state.stravaAthlete ? " as " + state.stravaAthlete : "");
-    btn.textContent = "Disconnect";
-    btn.className = "strava-btn disconnect";
+    btn.textContent = "Disconnect"; btn.className = "strava-btn disconnect";
     document.getElementById("week-hint").textContent = "synced from Strava";
   } else {
     dot.className = "strava-dot";
     txt.textContent = "Not connected to Strava";
-    btn.textContent = "Connect";
-    btn.className = "strava-btn";
+    btn.textContent = "Connect"; btn.className = "strava-btn";
     document.getElementById("week-hint").textContent = "tap ride days to log";
   }
 }
 
-// ─── MANUAL RIDE LOG ──────────────────────────────────────────────────────────
-
+// ── manual ride log ───────────────────────────────────────────────────────────
 function openModal(i) {
-  if (state.stravaToken) return; // don't allow manual when strava connected
+  if (state.stravaToken) return;
   modalDayIndex = i;
   document.getElementById("modal-title").textContent = WEEK_DAYS[i] + " ride";
   var ride = state.rides[i] || {};
@@ -417,35 +632,21 @@ function openModal(i) {
   document.getElementById("input-dur").value = ride.dur || "";
   document.getElementById("modal-overlay").className = "modal-overlay show";
 }
-
-function closeModal() {
-  document.getElementById("modal-overlay").className = "modal-overlay";
-  modalDayIndex = -1;
-}
-
+function closeModal() { document.getElementById("modal-overlay").className = "modal-overlay"; modalDayIndex = -1; }
 function saveRide() {
   if (modalDayIndex < 0) return;
   var dist = parseFloat(document.getElementById("input-dist").value);
   var dur = parseInt(document.getElementById("input-dur").value);
-  state.rides[modalDayIndex] = {
-    dist: isNaN(dist) ? null : dist,
-    dur: isNaN(dur) ? null : dur
-  };
-  saveState();
-  closeModal();
-  renderWeek();
+  state.rides[modalDayIndex] = { dist: isNaN(dist) ? null : dist, dur: isNaN(dur) ? null : dur };
+  saveState(); closeModal(); renderWeek();
 }
-
 function clearRide() {
   if (modalDayIndex < 0) return;
   state.rides[modalDayIndex] = null;
-  saveState();
-  closeModal();
-  renderWeek();
+  saveState(); closeModal(); renderWeek();
 }
 
-// ─── RENDER ───────────────────────────────────────────────────────────────────
-
+// ── week render ───────────────────────────────────────────────────────────────
 function render() {
   saveState();
   var di = state.activeDay;
@@ -456,14 +657,8 @@ function render() {
   DAYS.forEach(function(d, i) {
     var btn = document.createElement("button");
     btn.className = "day-btn" + (i === di ? " active" : "");
-    if (i === di) {
-      btn.style.borderColor = d.color;
-      btn.style.background = d.lightColor;
-      btn.style.color = d.textColor;
-    }
-    btn.innerHTML =
-      '<div class="d-name">' + d.day.slice(0,3).toUpperCase() + '</div>' +
-      '<div class="d-label">' + d.label + '</div>' +
+    if (i === di) { btn.style.borderColor = d.color; btn.style.background = d.lightColor; btn.style.color = d.textColor; }
+    btn.innerHTML = '<div class="d-name">' + d.day.slice(0,3).toUpperCase() + '</div><div class="d-label">' + d.label + '</div>' +
       '<div class="done-dot" style="background:' + d.color + ';' + (state.completedDays[i] ? 'display:block' : '') + '"></div>';
     btn.onclick = (function(idx) { return function() { state.activeDay = idx; render(); }; })(i);
     sel.appendChild(btn);
@@ -474,9 +669,8 @@ function render() {
   document.getElementById("hdr-focus").textContent = day.focus;
   document.getElementById("hdr-sub").textContent = day.day + " \u00b7 " + doneCount + "/" + total + " exercises";
 
-  var pct = Math.round((doneCount / total) * 100);
   var bar = document.getElementById("progress-bar");
-  bar.style.width = pct + "%";
+  bar.style.width = Math.round((doneCount/total)*100) + "%";
   bar.style.background = day.color;
 
   var list = document.getElementById("ex-list");
@@ -486,17 +680,13 @@ function render() {
     var row = document.createElement("div");
     row.className = "ex-row" + (done ? " done" : "");
     if (done) { row.style.borderColor = day.color + "40"; row.style.background = day.lightColor; }
-    var eqHtml = "";
-    if (ex.equipment === "band") eqHtml = '<span class="eq-pill eq-band">band</span>';
-    if (ex.equipment === "KB") eqHtml = '<span class="eq-pill eq-kb">KB</span>';
+    var eqHtml = ex.equipment === "band" ? '<span class="eq-pill eq-band">band</span>' : ex.equipment === "KB" ? '<span class="eq-pill eq-kb">KB</span>' : "";
     row.innerHTML =
       '<div class="checkbox' + (done ? " checked" : "") + '" style="' + (done ? "background:" + day.color : "") + '">' +
         '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
       '</div>' +
-      '<div class="ex-content">' +
-        '<div><span class="ex-name" style="color:' + (done ? day.textColor : "#111") + '">' + ex.name + '</span>' + eqHtml + '</div>' +
-        '<div class="ex-meta">' + ex.sets + ' sets \u00b7 ' + ex.reps + '</div>' +
-      '</div>' +
+      '<div class="ex-content"><div><span class="ex-name" style="color:' + (done ? day.textColor : "#111") + '">' + ex.name + '</span>' + eqHtml + '</div>' +
+        '<div class="ex-meta">' + ex.sets + ' sets \u00b7 ' + ex.reps + '</div></div>' +
       '<a class="demo-btn" href="' + ex.url + '" target="_blank" rel="noopener noreferrer" style="color:' + day.color + ';background:' + day.lightColor + ';border:0.5px solid ' + day.color + '50">Demo</a>';
     row.querySelector(".checkbox").addEventListener("click", (function(dayIdx, exIdx) {
       return function() {
@@ -511,17 +701,12 @@ function render() {
   var msg = document.getElementById("complete-msg");
   if (state.completedDays[di]) {
     msg.className = "complete-msg show";
-    msg.style.background = day.lightColor;
-    msg.style.borderColor = day.color + "40";
+    msg.style.background = day.lightColor; msg.style.borderColor = day.color + "40";
     document.getElementById("complete-title").style.color = day.textColor;
     document.getElementById("complete-title").textContent = "Session complete";
     document.getElementById("complete-sub").style.color = day.textColor;
-    document.getElementById("complete-sub").textContent = di < 3
-      ? "Next up: " + DAYS[di + 1].day + " \u2014 " + DAYS[di + 1].focus
-      : "Rest up for Saturday's long ride.";
-  } else {
-    msg.className = "complete-msg";
-  }
+    document.getElementById("complete-sub").textContent = di < 3 ? "Next up: " + DAYS[di+1].day + " \u2014 " + DAYS[di+1].focus : "Rest up for Saturday's long ride.";
+  } else { msg.className = "complete-msg"; }
 
   updateStravaBar();
   renderWeek();
@@ -536,73 +721,43 @@ function renderWeek() {
     var gymIdx = i < 4 ? i : null;
     var isRideDay = RIDE_DAYS.indexOf(i) >= 0;
     var isLong = i === 5;
-    var isSun = i === 6;
     var isDoneGym = gymIdx !== null && state.completedDays[gymIdx];
     var ride = state.rides[i] || null;
 
-    var bg, borderColor, labelColor, labelText, metaText;
-
+    var bg, borderColor, labelColor, labelText;
     if (gymIdx !== null) {
       bg = isDoneGym ? DAYS[gymIdx].color : DAYS[gymIdx].lightColor;
       borderColor = DAYS[gymIdx].color + "60";
       labelColor = isDoneGym ? "#fff" : DAYS[gymIdx].textColor;
-      labelText = isDoneGym ? "done" : "D" + (gymIdx + 1);
+      labelText = isDoneGym ? "done" : "D" + (gymIdx+1);
     } else if (isLong) {
-      bg = ride ? "#1D9E75" : "#FAEEDA";
-      borderColor = ride ? "#1D9E7580" : "#EF9F27";
-      labelColor = ride ? "#fff" : "#633806";
-      labelText = "long";
-    } else if (isSun) {
+      bg = ride ? "#1D9E75" : "#FAEEDA"; borderColor = ride ? "#1D9E7580" : "#EF9F27";
+      labelColor = ride ? "#fff" : "#633806"; labelText = "long";
+    } else if (i === 6) {
       bg = "#f3f3f3"; borderColor = "#e8e8e8"; labelColor = "#aaa"; labelText = "rest";
     } else {
-      bg = ride ? "#E6F1FB" : "#f3f3f3";
-      borderColor = ride ? "#378ADD60" : "#e8e8e8";
-      labelColor = ride ? "#185FA5" : "#aaa";
-      labelText = "ride";
+      bg = ride ? "#E6F1FB" : "#f3f3f3"; borderColor = ride ? "#378ADD60" : "#e8e8e8";
+      labelColor = ride ? "#185FA5" : "#aaa"; labelText = "ride";
     }
 
-    if (isRideDay && ride && (ride.dist || ride.dur)) {
-      var parts = [];
-      if (ride.dist) parts.push(ride.dist + "mi");
-      if (ride.dur) parts.push(ride.dur + "m");
-      metaText = parts.join(" \u00b7 ");
-    } else { metaText = ""; }
+    var distTag = (ride && ride.dist) ? '<div class="week-box-label" style="color:' + labelColor + ';font-size:10px;font-weight:500">' + ride.dist + ' mi</div>' : "";
+    var stravaTag = (ride && ride.fromStrava) ? '<div class="week-box-meta" style="color:#FC4C02">' + (ride.type ? ride.type.replace("Virtual","Virtual ") : "Ride") + '</div>' : "";
 
     var cell = document.createElement("div");
-    // only clickable for manual log when strava not connected
     var clickable = isRideDay && !isStravaConnected;
     cell.className = "week-cell" + (clickable ? " clickable" : "");
-
-    var metaHtml = metaText
-      ? '<div class="week-box-meta" style="color:' + labelColor + ';opacity:0.8">' + metaText + '</div>'
-      : "";
-
-    // strava icon indicator
-    var stravaTag = (ride && ride.fromStrava)
-      ? '<div class="week-box-meta" style="color:#FC4C02;opacity:0.9">' + (ride.type ? ride.type.replace("Virtual","Virtual ") : "Ride") + '</div>'
-      : "";
-
-    var distTag = (ride && ride.dist)
-      ? '<div class="week-box-label" style="color:' + labelColor + ';font-size:10px;font-weight:500">' + ride.dist + ' mi</div>'
-      : "";
-
-    cell.innerHTML =
-      '<div class="week-day-name">' + d + '</div>' +
+    cell.innerHTML = '<div class="week-day-name">' + d + '</div>' +
       '<div class="week-box" style="background:' + bg + ';border-color:' + borderColor + (ride && ride.fromStrava && ride.id ? ';cursor:pointer' : '') + '">' +
-        '<div class="week-box-label" style="color:' + labelColor + '">' + labelText + '</div>' +
-        distTag + stravaTag +
+        '<div class="week-box-label" style="color:' + labelColor + '">' + labelText + '</div>' + distTag + stravaTag +
       '</div>';
 
-    if (clickable) {
-      cell.addEventListener("click", (function(idx) { return function() { openModal(idx); }; })(i));
-    }
+    if (clickable) cell.addEventListener("click", (function(idx) { return function() { openModal(idx); }; })(i));
     if (ride && ride.fromStrava && ride.id) {
       cell.querySelector(".week-box").addEventListener("click", function(e) {
         e.stopPropagation();
         window.open("https://www.strava.com/activities/" + ride.id, "_blank");
       });
     }
-
     grid.appendChild(cell);
   });
 }
@@ -614,19 +769,11 @@ function resetDay() {
   render();
 }
 
-document.getElementById("modal-overlay").addEventListener("click", function(e) {
-  if (e.target === this) closeModal();
-});
-document.getElementById("secret-modal").addEventListener("click", function(e) {
-  if (e.target === this) closeSecretModal();
-});
+document.getElementById("modal-overlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
+document.getElementById("secret-modal").addEventListener("click", function(e) { if (e.target === this) closeSecretModal(); });
 
-// handle OAuth redirect on page load
 handleOAuthCallback();
-
-// if already connected, refresh activities
 if (state.stravaToken) fetchStravaActivities();
-
 render();
 </script>
 </body>
