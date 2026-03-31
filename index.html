@@ -9,12 +9,10 @@
   body { background: #111; min-height: 100vh; padding: 24px 20px; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
   .card { background: #fff; border-radius: 20px; padding: 20px 16px; color: #111; max-width: 480px; margin: 0 auto; }
 
-  /* view toggle */
   .view-toggle { display: flex; gap: 6px; margin-bottom: 16px; }
   .view-btn { flex: 1; padding: 7px; border-radius: 8px; border: 0.5px solid #e5e5e5; background: #fafafa; font-size: 12px; font-weight: 500; color: #888; cursor: pointer; }
   .view-btn.active { background: #111; color: #fff; border-color: #111; }
 
-  /* strava bar */
   .strava-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; padding: 10px 12px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; }
   .strava-status { font-size: 12px; color: #888; display: flex; align-items: center; gap: 6px; }
   .strava-dot { width: 7px; height: 7px; border-radius: 50%; background: #ccc; flex-shrink: 0; }
@@ -22,7 +20,6 @@
   .strava-btn { font-size: 11px; font-weight: 500; padding: 5px 10px; border-radius: 6px; border: none; cursor: pointer; background: #FC4C02; color: #fff; }
   .strava-btn.disconnect { background: none; border: 0.5px solid #ddd; color: #888; }
 
-  /* day selector */
   .day-selector { display: flex; gap: 8px; margin-bottom: 20px; }
   .day-btn { flex: 1; padding: 10px 4px; border-radius: 10px; cursor: pointer; text-align: center; position: relative; border: 0.5px solid #e5e5e5; background: #fafafa; }
   .day-btn.active { border-width: 1.5px; }
@@ -41,27 +38,44 @@
   .progress-bar { height: 100%; border-radius: 4px; transition: width 0.3s ease; }
 
   .ex-list { display: flex; flex-direction: column; gap: 8px; }
-  .ex-row { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 10px; border: 0.5px solid #e8e8e8; background: #fafafa; transition: all 0.15s ease; }
+
+  /* exercise row */
+  .ex-wrap { display: flex; flex-direction: column; gap: 0; }
+  .ex-row { display: flex; align-items: center; gap: 10px; padding: 11px 14px; border-radius: 10px; border: 0.5px solid #e8e8e8; background: #fafafa; transition: all 0.15s ease; }
   .ex-row.done { border-width: 1px; }
+  .ex-row.swap-open { border-radius: 10px 10px 0 0; border-bottom-color: transparent; }
   .checkbox { width: 20px; height: 20px; border-radius: 6px; flex-shrink: 0; cursor: pointer; border: 1.5px solid #ccc; background: transparent; display: flex; align-items: center; justify-content: center; transition: all 0.15s ease; }
   .checkbox.checked { border: none; }
   .checkbox svg { display: none; }
   .checkbox.checked svg { display: block; }
   .ex-content { flex: 1; min-width: 0; }
-  .ex-name { font-size: 14px; font-weight: 500; }
+  .ex-name { font-size: 13px; font-weight: 500; }
   .ex-row.done .ex-name { text-decoration: line-through; opacity: 0.7; }
-  .eq-pill { font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 20px; margin-left: 5px; vertical-align: middle; }
+  .eq-pill { font-size: 9px; font-weight: 500; padding: 1px 5px; border-radius: 20px; margin-left: 4px; vertical-align: middle; }
   .eq-band { background: #EEEDFE; color: #3C3489; }
   .eq-kb { background: #FAEEDA; color: #633806; }
-  .ex-meta { font-size: 12px; color: #888; margin-top: 2px; }
-  .demo-btn { font-size: 11px; font-weight: 500; flex-shrink: 0; cursor: pointer; padding: 4px 8px; border-radius: 6px; text-decoration: none; }
+  .ex-meta { font-size: 11px; color: #888; margin-top: 1px; }
+  .ex-actions { display: flex; gap: 5px; flex-shrink: 0; }
+  .demo-btn { font-size: 10px; font-weight: 500; cursor: pointer; padding: 4px 7px; border-radius: 6px; text-decoration: none; white-space: nowrap; }
+  .swap-btn { font-size: 10px; font-weight: 500; cursor: pointer; padding: 4px 7px; border-radius: 6px; border: 0.5px solid #e0e0e0; background: #f5f5f5; color: #555; white-space: nowrap; }
+  .swap-btn.active { background: #111; color: #fff; border-color: #111; }
+
+  /* swap panel */
+  .swap-panel { display: none; border: 0.5px solid #e8e8e8; border-top: none; border-radius: 0 0 10px 10px; background: #fafafa; overflow: hidden; }
+  .swap-panel.show { display: block; }
+  .swap-option { display: flex; align-items: center; justify-content: space-between; padding: 9px 14px; border-top: 0.5px solid #f0f0f0; gap: 10px; cursor: pointer; transition: background 0.1s; }
+  .swap-option:first-child { border-top: none; }
+  .swap-option:hover { background: #f0f0f0; }
+  .swap-opt-left { flex: 1; min-width: 0; }
+  .swap-opt-name { font-size: 12px; font-weight: 500; color: #111; }
+  .swap-opt-meta { font-size: 11px; color: #888; margin-top: 1px; }
+  .swap-use-btn { font-size: 10px; font-weight: 500; padding: 4px 8px; border-radius: 6px; border: none; background: #111; color: #fff; cursor: pointer; flex-shrink: 0; white-space: nowrap; }
 
   .complete-msg { margin-top: 16px; padding: 12px 16px; border-radius: 10px; text-align: center; border-width: 1px; border-style: solid; display: none; }
   .complete-msg.show { display: block; }
   .complete-title { font-size: 14px; font-weight: 500; }
   .complete-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
 
-  /* week overview */
   .week-overview { margin-top: 20px; padding: 14px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; }
   .week-overview-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
   .week-label { font-size: 11px; font-weight: 500; color: #aaa; letter-spacing: 0.05em; }
@@ -72,7 +86,6 @@
   .week-box-label { font-size: 9px; font-weight: 500; }
   .week-box-meta { font-size: 8px; }
 
-  /* month view */
   .month-view { display: none; }
   .month-view.show { display: block; }
   .month-nav { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; }
@@ -99,7 +112,6 @@
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #888; }
   .legend-swatch { width: 10px; height: 10px; border-radius: 3px; }
 
-  /* modals */
   .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; align-items: center; justify-content: center; padding: 20px; }
   .modal-overlay.show { display: flex; }
   .modal { background: #fff; border-radius: 16px; padding: 20px; width: 100%; max-width: 320px; }
@@ -119,14 +131,10 @@
 </head>
 <body>
 <div class="card">
-
-  <!-- view toggle -->
   <div class="view-toggle">
     <button class="view-btn active" id="btn-week" onclick="switchView('week')">This week</button>
     <button class="view-btn" id="btn-month" onclick="switchView('month')">Month</button>
   </div>
-
-  <!-- strava bar -->
   <div class="strava-bar">
     <div class="strava-status">
       <div class="strava-dot" id="strava-dot"></div>
@@ -134,8 +142,6 @@
     </div>
     <button class="strava-btn" id="strava-action-btn" onclick="stravaAction()">Connect</button>
   </div>
-
-  <!-- week view -->
   <div id="week-view">
     <div class="day-selector" id="day-selector"></div>
     <div class="header">
@@ -159,8 +165,6 @@
       <div class="week-grid" id="week-grid"></div>
     </div>
   </div>
-
-  <!-- month view -->
   <div class="month-view" id="month-view">
     <div class="month-nav">
       <button class="month-nav-btn" onclick="shiftMonth(-1)">&#8249;</button>
@@ -168,18 +172,9 @@
       <button class="month-nav-btn" onclick="shiftMonth(1)">&#8250;</button>
     </div>
     <div class="month-stats">
-      <div class="stat-box">
-        <div class="stat-val" id="stat-gym-days">0</div>
-        <div class="stat-label">gym sessions</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val" id="stat-ride-days">0</div>
-        <div class="stat-label">rides logged</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-val streak-val" id="stat-streak">0</div>
-        <div class="stat-label">week streak</div>
-      </div>
+      <div class="stat-box"><div class="stat-val" id="stat-gym-days">0</div><div class="stat-label">gym sessions</div></div>
+      <div class="stat-box"><div class="stat-val" id="stat-ride-days">0</div><div class="stat-label">rides logged</div></div>
+      <div class="stat-box"><div class="stat-val streak-val" id="stat-streak">0</div><div class="stat-label">week streak</div></div>
     </div>
     <div class="cal-header" id="cal-header"></div>
     <div class="cal-grid" id="cal-grid"></div>
@@ -189,23 +184,15 @@
       <div class="legend-item"><div class="legend-swatch" style="background:#FC4C02;border-radius:50%"></div> Strava ride</div>
     </div>
   </div>
-
 </div>
 
-<!-- ride modal -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title" id="modal-title"></div>
     <div class="modal-sub">Log your ride</div>
     <div class="modal-fields">
-      <div>
-        <div class="field-label">Distance (miles)</div>
-        <input class="field-input" id="input-dist" type="number" step="0.1" min="0" placeholder="e.g. 8.5">
-      </div>
-      <div>
-        <div class="field-label">Duration (mins)</div>
-        <input class="field-input" id="input-dur" type="number" min="0" placeholder="e.g. 45">
-      </div>
+      <div><div class="field-label">Distance (miles)</div><input class="field-input" id="input-dist" type="number" step="0.1" min="0" placeholder="e.g. 8.5"></div>
+      <div><div class="field-label">Duration (mins)</div><input class="field-input" id="input-dur" type="number" min="0" placeholder="e.g. 45"></div>
     </div>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeModal()">Cancel</button>
@@ -215,18 +202,14 @@
   </div>
 </div>
 
-<!-- secret modal -->
 <div class="modal-overlay" id="secret-modal">
   <div class="modal">
     <div class="modal-title">Enter your Client Secret</div>
-    <div class="modal-sub">From your Strava API settings page. This stays in your browser only.</div>
+    <div class="modal-sub">From your Strava API settings page. Stays in your browser only.</div>
     <div class="modal-fields">
-      <div>
-        <div class="field-label">Client Secret</div>
-        <input class="field-input" id="input-secret" type="password" placeholder="Paste your client secret here">
-      </div>
+      <div><div class="field-label">Client Secret</div><input class="field-input" id="input-secret" type="password" placeholder="Paste your client secret here"></div>
     </div>
-    <p class="secret-note">Find it at <a href="https://www.strava.com/settings/api" target="_blank">strava.com/settings/api</a>. Never sent anywhere except directly to Strava.</p>
+    <p class="secret-note">Find it at <a href="https://www.strava.com/settings/api" target="_blank">strava.com/settings/api</a>.</p>
     <br>
     <div class="modal-actions">
       <button class="modal-cancel" onclick="closeSecretModal()">Cancel</button>
@@ -239,53 +222,176 @@
 var STRAVA_CLIENT_ID = "217088";
 var REDIRECT_URI = "https://nastalgia.github.io/workout-dashboard/";
 
+// ── exercise database ─────────────────────────────────────────────────────────
+// Each exercise has alts: array of swap options {name, sets, reps, equipment, url, note}
 var DAYS = [
   { day: "Monday", label: "Day 1", focus: "Glute activation", muscles: ["Glutes", "Hamstrings", "Lateral hip"], color: "#1D9E75", lightColor: "#E1F5EE", textColor: "#085041",
     exercises: [
-      { name: "Glute bridge", sets: 3, reps: "15", equipment: "", url: "https://www.strengthlog.com/glute-bridge/" },
-      { name: "Single-leg bridge", sets: 3, reps: "10/side", equipment: "", url: "https://www.strengthlog.com/one-legged-glute-bridge/" },
-      { name: "Banded clamshell", sets: 3, reps: "15/side", equipment: "band", url: "https://www.strengthlog.com/clamshell/" },
-      { name: "Banded lateral walk", sets: 3, reps: "12 steps", equipment: "band", url: "https://www.strengthlog.com/lateral-walk-with-band/" },
-      { name: "Donkey kick", sets: 3, reps: "12/side", equipment: "", url: "https://www.strengthlog.com/donkey-kick/" }
+      { name: "Glute bridge", sets: 3, reps: "15", equipment: "", url: "https://fitbod.me/exercises/glute-bridge",
+        alts: [
+          { name: "Hip thrust", sets: 3, reps: "12", equipment: "", url: "https://fitbod.me/exercises/hip-thrust", note: "More range of motion" },
+          { name: "Frog pump", sets: 3, reps: "20", equipment: "", url: "https://fitbod.me/exercises/frog-pump", note: "Higher rep activation" },
+          { name: "Glute bridge w/ band", sets: 3, reps: "15", equipment: "band", url: "https://fitbod.me/exercises/glute-bridge", note: "Adds lateral resistance" }
+        ]
+      },
+      { name: "Single-leg bridge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/single-leg-glute-bridge",
+        alts: [
+          { name: "Single-leg hip thrust", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/single-leg-hip-thrust", note: "Greater ROM" },
+          { name: "Dumbbell glute bridge", sets: 3, reps: "12", equipment: "", url: "https://fitbod.me/exercises/dumbbell-glute-bridge", note: "Add load bilaterally first" },
+          { name: "Barbell hip thrust", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/barbell-hip-thrust", note: "Heavy loaded version" }
+        ]
+      },
+      { name: "Banded clamshell", sets: 3, reps: "15/side", equipment: "band", url: "https://fitbod.me/exercises/clamshell",
+        alts: [
+          { name: "Side-lying hip abduction", sets: 3, reps: "15/side", equipment: "", url: "https://fitbod.me/exercises/side-lying-hip-abduction", note: "No band needed" },
+          { name: "Fire hydrant", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/fire-hydrant", note: "Glute med + external rotation" },
+          { name: "Cable hip abduction", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/cable-hip-abduction", note: "Standing with load" }
+        ]
+      },
+      { name: "Banded lateral walk", sets: 3, reps: "12 steps", equipment: "band", url: "https://fitbod.me/exercises/lateral-band-walk",
+        alts: [
+          { name: "Monster walk", sets: 3, reps: "10 steps", equipment: "band", url: "https://fitbod.me/exercises/monster-walk", note: "Forward + lateral pattern" },
+          { name: "Hip abduction machine", sets: 3, reps: "15", equipment: "", url: "https://fitbod.me/exercises/hip-abduction-machine", note: "Seated alternative" },
+          { name: "Cable hip abduction", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/cable-hip-abduction", note: "Standing with load" }
+        ]
+      },
+      { name: "Donkey kick", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/donkey-kick",
+        alts: [
+          { name: "Cable glute kickback", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/cable-glute-kickback", note: "Adds progressive load" },
+          { name: "Resistance band kickback", sets: 3, reps: "15/side", equipment: "band", url: "https://fitbod.me/exercises/resistance-band-glute-kickback", note: "Band for resistance" },
+          { name: "Quadruped hip extension", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/quadruped-hip-extension", note: "Straight leg variation" }
+        ]
+      }
     ]
   },
   { day: "Tuesday", label: "Day 2", focus: "Core stability", muscles: ["Anti-rotation", "Deep core", "Obliques"], color: "#534AB7", lightColor: "#EEEDFE", textColor: "#3C3489",
     exercises: [
-      { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://www.strengthlog.com/dead-bug/" },
-      { name: "Forearm plank", sets: 3, reps: "30-45s", equipment: "", url: "https://www.strengthlog.com/plank/" },
-      { name: "Pallof press", sets: 3, reps: "10/side", equipment: "band", url: "https://www.strengthlog.com/pallof-press/" },
-      { name: "Side plank", sets: 3, reps: "20s/side", equipment: "", url: "https://www.strengthlog.com/side-plank/" },
-      { name: "Bird dog", sets: 3, reps: "8/side", equipment: "", url: "https://www.strengthlog.com/bird-dog/" }
+      { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/dead-bug",
+        alts: [
+          { name: "Ab wheel rollout", sets: 3, reps: "8", equipment: "", url: "https://fitbod.me/exercises/ab-wheel-rollout", note: "More advanced" },
+          { name: "Hollow body hold", sets: 3, reps: "30s", equipment: "", url: "https://fitbod.me/exercises/hollow-body-hold", note: "Gymnastics core" },
+          { name: "Leg raise", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/leg-raise", note: "Similar pattern" }
+        ]
+      },
+      { name: "Forearm plank", sets: 3, reps: "30-45s", equipment: "", url: "https://fitbod.me/exercises/plank",
+        alts: [
+          { name: "Plank with leg lift", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/plank-with-leg-lift", note: "Adds glute activation" },
+          { name: "Bear crawl", sets: 3, reps: "20m", equipment: "", url: "https://fitbod.me/exercises/bear-crawl", note: "Moving plank variation" },
+          { name: "Body saw", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/plank", note: "Dynamic plank extension" }
+        ]
+      },
+      { name: "Pallof press", sets: 3, reps: "10/side", equipment: "band", url: "https://fitbod.me/exercises/pallof-press",
+        alts: [
+          { name: "Half-kneeling Pallof press", sets: 3, reps: "10/side", equipment: "band", url: "https://fitbod.me/exercises/half-kneeling-pallof-press", note: "More hip stability demand" },
+          { name: "Suitcase carry", sets: 3, reps: "20m/side", equipment: "", url: "https://fitbod.me/exercises/suitcase-carry", note: "Anti-lateral flexion" },
+          { name: "Landmine rotation", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/landmine-rotation", note: "Rotational core" }
+        ]
+      },
+      { name: "Side plank", sets: 3, reps: "20s/side", equipment: "", url: "https://fitbod.me/exercises/side-bridge",
+        alts: [
+          { name: "Side plank leg lift", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/side-plank-leg-lift", note: "Adds hip abductor work" },
+          { name: "Side plank clam lift", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/side-plank-clam-lifts", note: "Combines plank + clamshell" },
+          { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://fitbod.me/exercises/copenhagen-plank", note: "Harder, targets adductors" }
+        ]
+      },
+      { name: "Bird dog", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/bird-dog",
+        alts: [
+          { name: "Bird dog crunch", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/bird-dog", note: "Adds crunch at bottom" },
+          { name: "Quadruped hip extension", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/quadruped-hip-extension", note: "Straight leg variation" },
+          { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/dead-bug", note: "Supine version" }
+        ]
+      }
     ]
   },
   { day: "Wednesday", label: "Day 3", focus: "Hip flexor + mobility", muscles: ["Hip flexors", "Psoas", "Mobility"], color: "#D85A30", lightColor: "#FAECE7", textColor: "#712B13",
     exercises: [
-      { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://www.strengthlog.com/90-90-hip-stretch/" },
-      { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://www.strengthlog.com/psoas-march/" },
-      { name: "Standing hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://www.strengthlog.com/standing-hip-flexion/" },
-      { name: "Kneeling hip flexor stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://www.strengthlog.com/kneeling-hip-flexor-stretch/" },
-      { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://www.strengthlog.com/leg-lowering/" }
+      { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/seated-hip-internal-rotation-stretch",
+        alts: [
+          { name: "Pigeon stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/pigeon-stretch", note: "Deeper glute stretch" },
+          { name: "Figure-4 stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/figure-four-stretch", note: "Supine, easier entry" },
+          { name: "Hip flexor stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/hip-flexor-stretch", note: "Direct hip flexor target" }
+        ]
+      },
+      { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/lying-hip-flexion",
+        alts: [
+          { name: "Mountain climber", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/mountain-climber", note: "Dynamic hip flexor drive" },
+          { name: "Hanging knee raise", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/hanging-knee-raise", note: "Loaded hip flexion" },
+          { name: "Lying hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/lying-hip-flexion", note: "Same pattern, no band" }
+        ]
+      },
+      { name: "Standing hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/standing-hip-flexion",
+        alts: [
+          { name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/reverse-lunge", note: "Hip flexor under load" },
+          { name: "Step-up with knee drive", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/step-up", note: "Functional hip flexion" },
+          { name: "High knee march", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/high-knee-march", note: "Standing, no band" }
+        ]
+      },
+      { name: "Kneeling hip flexor stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/kneeling-hip-flexor-stretch",
+        alts: [
+          { name: "Couch stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/couch-stretch", note: "Deeper quad + hip flexor" },
+          { name: "Low lunge", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/low-lunge", note: "Dynamic entry" },
+          { name: "Hip flexor stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/hip-flexor-stretch", note: "Standing variation" }
+        ]
+      },
+      { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/lying-leg-raise",
+        alts: [
+          { name: "Hanging leg raise", sets: 3, reps: "8", equipment: "", url: "https://fitbod.me/exercises/hanging-knee-raise", note: "More advanced" },
+          { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/dead-bug", note: "Adds arm movement" },
+          { name: "Reverse crunch", sets: 3, reps: "12", equipment: "", url: "https://fitbod.me/exercises/reverse-crunch", note: "Pelvic tilt focus" }
+        ]
+      }
     ]
   },
   { day: "Thursday", label: "Day 4", focus: "Single-leg strength", muscles: ["Quads", "Glutes", "Adductors"], color: "#3B6D11", lightColor: "#EAF3DE", textColor: "#27500A",
     exercises: [
-      { name: "Bulgarian split squat", sets: 3, reps: "8/side", equipment: "KB", url: "https://www.strengthlog.com/bulgarian-split-squat/" },
-      { name: "Single-leg RDL", sets: 3, reps: "8/side", equipment: "KB", url: "https://www.strengthlog.com/single-leg-romanian-deadlift/" },
-      { name: "Step-up", sets: 3, reps: "10/side", equipment: "KB", url: "https://www.strengthlog.com/step-up/" },
-      { name: "Lateral lunge", sets: 3, reps: "10/side", equipment: "", url: "https://www.strengthlog.com/lateral-lunge/" },
-      { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://www.strengthlog.com/copenhagen-plank/" }
+      { name: "Bulgarian split squat", sets: 3, reps: "8/side", equipment: "KB", url: "https://fitbod.me/exercises/bulgarian-split-squat",
+        alts: [
+          { name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/reverse-lunge", note: "Easier balance" },
+          { name: "Split squat", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/split-squat", note: "Static, no elevation" },
+          { name: "Dumbbell lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-lunge", note: "More quad emphasis" }
+        ]
+      },
+      { name: "Single-leg RDL", sets: 3, reps: "8/side", equipment: "KB", url: "https://fitbod.me/exercises/single-leg-romanian-deadlift",
+        alts: [
+          { name: "Romanian deadlift", sets: 3, reps: "10", equipment: "KB", url: "https://fitbod.me/exercises/romanian-deadlift", note: "Bilateral version" },
+          { name: "Dumbbell deadlift", sets: 3, reps: "10", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-deadlift", note: "More stable hinge" },
+          { name: "Good morning", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/good-morning", note: "Bodyweight hip hinge" }
+        ]
+      },
+      { name: "Step-up", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/step-up",
+        alts: [
+          { name: "Box jump", sets: 3, reps: "6", equipment: "", url: "https://fitbod.me/exercises/box-jump", note: "Explosive version" },
+          { name: "Barbell step-up", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/barbell-step-up", note: "Heavier loaded option" },
+          { name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/reverse-lunge", note: "Similar single-leg pattern" }
+        ]
+      },
+      { name: "Lateral lunge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/lateral-lunge",
+        alts: [
+          { name: "Cossack squat", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/cossack-squat", note: "Deeper adductor stretch" },
+          { name: "Sumo squat", sets: 3, reps: "12", equipment: "KB", url: "https://fitbod.me/exercises/sumo-squat", note: "Wide stance bilateral" },
+          { name: "Dumbbell lateral lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-lateral-lunge", note: "Adds load" }
+        ]
+      },
+      { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://fitbod.me/exercises/copenhagen-plank",
+        alts: [
+          { name: "Side plank", sets: 3, reps: "25s/side", equipment: "", url: "https://fitbod.me/exercises/side-bridge", note: "Easier regression" },
+          { name: "Side plank leg lift", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/side-plank-leg-lift", note: "Abductor emphasis" },
+          { name: "Adductor squeeze", sets: 3, reps: "15", equipment: "", url: "https://fitbod.me/exercises/adductor-squeeze", note: "Isolated adductor work" }
+        ]
+      }
     ]
   }
 ];
 
 var WEEK_DAYS = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
 var RIDE_DAYS = [0,1,2,3,4,5];
-var STORAGE_KEY = "cycling_workout_v4";
+var STORAGE_KEY = "cycling_workout_v5";
 var HISTORY_KEY = "cycling_history_v1";
 var modalDayIndex = -1;
-var currentMonthOffset = 0; // 0 = current month
+var currentMonthOffset = 0;
+var openSwapIndex = -1; // which exercise has swap panel open
 
-// ── week key helpers ──────────────────────────────────────────────────────────
+// ── week key ──────────────────────────────────────────────────────────────────
 function getWeekKey(date) {
   var d = date ? new Date(date) : new Date();
   var day = d.getDay();
@@ -294,7 +400,6 @@ function getWeekKey(date) {
   monday.setDate(d.getDate() + diff);
   return monday.getFullYear() + "-" + (monday.getMonth()+1) + "-" + monday.getDate();
 }
-
 function getTodayIndex() {
   var map = {1:0,2:1,3:2,4:3};
   var d = new Date().getDay();
@@ -311,18 +416,17 @@ function loadState() {
       if (!s.stravaToken) s.stravaToken = null;
       if (!s.stravaSecret) s.stravaSecret = null;
       if (!s.stravaAthlete) s.stravaAthlete = null;
+      if (!s.swaps) s.swaps = [[],[],[],[]]; // per-day swap overrides
       var currentWeek = getWeekKey();
       if (s.weekKey && s.weekKey !== currentWeek) {
-        // archive outgoing week before reset
         archiveWeek(s);
         s.checked = DAYS.map(function(d) { return d.exercises.map(function() { return false; }); });
         s.completedDays = [false,false,false,false];
         s.rides = [null,null,null,null,null,null,null];
+        s.swaps = [[],[],[],[]];
         s.activeDay = getTodayIndex();
         s.weekKey = currentWeek;
-      } else if (!s.weekKey) {
-        s.weekKey = currentWeek;
-      }
+      } else if (!s.weekKey) { s.weekKey = currentWeek; }
       return s;
     }
   } catch(e) {}
@@ -332,50 +436,52 @@ function loadState() {
     completedDays: [false,false,false,false],
     rides: [null,null,null,null,null,null,null],
     stravaToken: null, stravaSecret: null, stravaAthlete: null,
-    weekKey: getWeekKey()
+    weekKey: getWeekKey(),
+    swaps: [[],[],[],[]]
   };
 }
-
-function saveState() {
-  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {}
-}
+function saveState() { try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e) {} }
 
 // ── history ───────────────────────────────────────────────────────────────────
-// history = { "YYYY-M-D": { completedDays:[bool,bool,bool,bool], rides:[...] }, ... }
-// keyed by Monday date of that week
-
-function loadHistory() {
-  try {
-    var raw = localStorage.getItem(HISTORY_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch(e) {}
-  return {};
-}
-
-function saveHistory(h) {
-  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); } catch(e) {}
-}
-
+function loadHistory() { try { var r = localStorage.getItem(HISTORY_KEY); if (r) return JSON.parse(r); } catch(e) {} return {}; }
+function saveHistory(h) { try { localStorage.setItem(HISTORY_KEY, JSON.stringify(h)); } catch(e) {} }
 function archiveWeek(s) {
   if (!s.weekKey) return;
   var h = loadHistory();
-  h[s.weekKey] = {
-    completedDays: s.completedDays.slice(),
-    rides: s.rides.slice()
-  };
+  h[s.weekKey] = { completedDays: s.completedDays.slice(), rides: s.rides.slice() };
   saveHistory(h);
 }
-
-// get data for a given date — either from live state (this week) or history
 function getWeekData(weekKey) {
-  if (weekKey === state.weekKey) {
-    return { completedDays: state.completedDays, rides: state.rides };
-  }
-  var h = loadHistory();
-  return h[weekKey] || null;
+  if (weekKey === state.weekKey) return { completedDays: state.completedDays, rides: state.rides };
+  var h = loadHistory(); return h[weekKey] || null;
 }
 
 var state = loadState();
+
+// ── get effective exercise (may be swapped) ───────────────────────────────────
+function getExercise(di, ei) {
+  var swap = state.swaps[di] && state.swaps[di][ei];
+  if (swap) return swap;
+  return DAYS[di].exercises[ei];
+}
+
+// ── swap an exercise ──────────────────────────────────────────────────────────
+function swapExercise(di, ei, alt) {
+  if (!state.swaps[di]) state.swaps[di] = [];
+  state.swaps[di][ei] = { name: alt.name, sets: alt.sets, reps: alt.reps, equipment: alt.equipment, url: alt.url, alts: DAYS[di].exercises[ei].alts };
+  state.checked[di][ei] = false;
+  state.completedDays[di] = false;
+  openSwapIndex = -1;
+  saveState();
+  render();
+}
+
+function resetSwap(di, ei) {
+  if (state.swaps[di]) state.swaps[di][ei] = null;
+  openSwapIndex = -1;
+  saveState();
+  render();
+}
 
 // ── view toggle ───────────────────────────────────────────────────────────────
 var currentView = "week";
@@ -385,142 +491,56 @@ function switchView(v) {
   document.getElementById("month-view").className = "month-view" + (v === "month" ? " show" : "");
   document.getElementById("btn-week").className = "view-btn" + (v === "week" ? " active" : "");
   document.getElementById("btn-month").className = "view-btn" + (v === "month" ? " active" : "");
-  if (v === "month") {
-    if (state.stravaToken) fetchStravaMonth(currentMonthOffset, renderMonth);
-    else renderMonth();
-  }
+  if (v === "month") { if (state.stravaToken) fetchStravaMonth(currentMonthOffset, renderMonth); else renderMonth(); }
 }
 
 // ── month view ────────────────────────────────────────────────────────────────
-function shiftMonth(dir) {
-  currentMonthOffset += dir;
-  if (state.stravaToken) fetchStravaMonth(currentMonthOffset, renderMonth);
-  else renderMonth();
-}
+function shiftMonth(dir) { currentMonthOffset += dir; if (state.stravaToken) fetchStravaMonth(currentMonthOffset, renderMonth); else renderMonth(); }
 
 function renderMonth() {
-  var now = new Date();
-  var y = now.getFullYear();
-  var m = now.getMonth() + currentMonthOffset;
-  // normalise
-  while (m < 0) { m += 12; y--; }
-  while (m > 11) { m -= 12; y++; }
-
+  var now = new Date(); var y = now.getFullYear(); var m = now.getMonth() + currentMonthOffset;
+  while (m < 0) { m += 12; y--; } while (m > 11) { m -= 12; y++; }
   var monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   document.getElementById("month-title").textContent = monthNames[m] + " " + y;
-
-  var firstDay = new Date(y, m, 1);
-  var lastDay = new Date(y, m+1, 0);
+  var firstDay = new Date(y, m, 1); var lastDay = new Date(y, m+1, 0);
   var today = new Date(); today.setHours(0,0,0,0);
-
-  // calendar starts Monday
-  var startDow = firstDay.getDay(); // 0=sun
-  var offset = startDow === 0 ? 6 : startDow - 1;
-
-  // build header
-  var hdr = document.getElementById("cal-header");
-  hdr.innerHTML = "";
-  ["M","T","W","T","F","S","S"].forEach(function(d) {
-    var el = document.createElement("div");
-    el.className = "cal-dow";
-    el.textContent = d;
-    hdr.appendChild(el);
-  });
-
-  // gather all week keys in this month
-  var history = loadHistory();
-  // stats counters
-  var gymDaysTotal = 0;
-  var rideDaysTotal = 0;
-
-  // build cells
-  var grid = document.getElementById("cal-grid");
-  grid.innerHTML = "";
-
-  var totalCells = offset + lastDay.getDate();
-  var rows = Math.ceil(totalCells / 7) * 7;
-
+  var startDow = firstDay.getDay(); var offset = startDow === 0 ? 6 : startDow - 1;
+  var hdr = document.getElementById("cal-header"); hdr.innerHTML = "";
+  ["M","T","W","T","F","S","S"].forEach(function(d) { var el = document.createElement("div"); el.className = "cal-dow"; el.textContent = d; hdr.appendChild(el); });
+  var grid = document.getElementById("cal-grid"); grid.innerHTML = "";
+  var totalCells = offset + lastDay.getDate(); var rows = Math.ceil(totalCells / 7) * 7;
+  var gymDaysTotal = 0; var rideDaysTotal = 0;
   for (var c = 0; c < rows; c++) {
-    var cell = document.createElement("div");
-    cell.className = "cal-cell";
-
+    var cell = document.createElement("div"); cell.className = "cal-cell";
     var dateNum = c - offset + 1;
-    if (dateNum < 1 || dateNum > lastDay.getDate()) {
-      grid.appendChild(cell);
-      continue;
-    }
-
-    var cellDate = new Date(y, m, dateNum);
-    cellDate.setHours(0,0,0,0);
-    var wk = getWeekKey(cellDate);
-    var dow = cellDate.getDay(); // 0=sun
-    var weekDayIdx = dow === 0 ? 6 : dow - 1; // 0=mon..6=sun
-
+    if (dateNum < 1 || dateNum > lastDay.getDate()) { grid.appendChild(cell); continue; }
+    var cellDate = new Date(y, m, dateNum); cellDate.setHours(0,0,0,0);
+    var wk = getWeekKey(cellDate); var dow = cellDate.getDay(); var weekDayIdx = dow === 0 ? 6 : dow - 1;
     cell.className = "cal-cell has-date";
-    cell.textContent = dateNum;
-
     if (cellDate.getTime() === today.getTime()) cell.className += " today";
-
-    // get week data
-    var wd = getWeekData(wk);
-
-    var gymDone = false;
-    var rideDone = false;
-    var isGymDay = weekDayIdx < 4; // mon-thu
-    var isRideDay = weekDayIdx < 6; // mon-sat
-
+    var wd = getWeekData(wk); var gymDone = false; var rideDone = false;
+    var isGymDay = weekDayIdx < 4; var isRideDay = weekDayIdx < 6;
     if (wd) {
-      if (isGymDay && wd.completedDays && wd.completedDays[weekDayIdx]) {
-        gymDone = true;
-        gymDaysTotal++;
-      }
-      if (isRideDay && wd.rides && wd.rides[weekDayIdx]) {
-        rideDone = true;
-        rideDaysTotal++;
-      }
+      if (isGymDay && wd.completedDays && wd.completedDays[weekDayIdx]) { gymDone = true; gymDaysTotal++; }
+      if (isRideDay && wd.rides && wd.rides[weekDayIdx]) { rideDone = true; rideDaysTotal++; }
     }
-
-    // dot row
     var dots = "";
     if (gymDone) dots += '<div class="cal-dot" style="background:#fff"></div>';
     if (rideDone) dots += '<div class="cal-dot" style="background:#FC4C02"></div>';
-
-    var dotHtml = (gymDone || rideDone)
-      ? '<div class="cal-dot-row">' + dots + '</div>'
-      : "";
-
-    if (gymDone && rideDone) {
-      cell.className += " gym-done ride-done both-done";
-      cell.style.borderColor = "#FC4C02";
-    } else if (gymDone) {
-      cell.className += " gym-done";
-    } else if (rideDone) {
-      cell.className += " ride-done";
-      cell.style.borderColor = "#1D9E75";
-      cell.style.background = "#E1F5EE";
-      cell.style.color = "#085041";
-    }
-
+    var dotHtml = (gymDone || rideDone) ? '<div class="cal-dot-row">' + dots + '</div>' : "";
+    if (gymDone && rideDone) { cell.className += " gym-done ride-done both-done"; cell.style.borderColor = "#FC4C02"; }
+    else if (gymDone) { cell.className += " gym-done"; }
+    else if (rideDone) { cell.className += " ride-done"; cell.style.borderColor = "#1D9E75"; cell.style.background = "#E1F5EE"; cell.style.color = "#085041"; }
     cell.innerHTML = '<div style="font-size:10px;font-weight:500">' + dateNum + '</div>' + dotHtml;
     grid.appendChild(cell);
   }
-
-  // streak: count consecutive weeks (ending with current) that had at least 1 gym session
-  var streak = 0;
-  var checkDate = new Date(today);
-  // go back up to 52 weeks
+  var streak = 0; var checkDate = new Date(today);
   for (var w = 0; w < 52; w++) {
-    var wkKey = getWeekKey(checkDate);
-    var wd2 = getWeekData(wkKey);
-    var hadGym = false;
-    if (wd2 && wd2.completedDays) {
-      for (var x = 0; x < 4; x++) { if (wd2.completedDays[x]) { hadGym = true; break; } }
-    }
-    if (hadGym) { streak++; }
-    else if (w > 0) { break; } // allow current week to be in progress
+    var wkKey = getWeekKey(checkDate); var wd2 = getWeekData(wkKey); var hadGym = false;
+    if (wd2 && wd2.completedDays) { for (var x = 0; x < 4; x++) { if (wd2.completedDays[x]) { hadGym = true; break; } } }
+    if (hadGym) { streak++; } else if (w > 0) { break; }
     checkDate.setDate(checkDate.getDate() - 7);
   }
-
   document.getElementById("stat-gym-days").textContent = gymDaysTotal;
   document.getElementById("stat-ride-days").textContent = rideDaysTotal;
   document.getElementById("stat-streak").textContent = streak;
@@ -532,312 +552,225 @@ function stravaAction() {
     state.stravaToken = null; state.stravaSecret = null; state.stravaAthlete = null;
     state.rides = [null,null,null,null,null,null,null];
     saveState(); updateStravaBar(); renderWeek();
-  } else {
-    document.getElementById("input-secret").value = "";
-    document.getElementById("secret-modal").className = "modal-overlay show";
-  }
+  } else { document.getElementById("input-secret").value = ""; document.getElementById("secret-modal").className = "modal-overlay show"; }
 }
-
 function closeSecretModal() { document.getElementById("secret-modal").className = "modal-overlay"; }
-
 function submitSecret() {
   var secret = document.getElementById("input-secret").value.trim();
   if (!secret) { alert("Please enter your Client Secret."); return; }
   state.stravaSecret = secret; saveState(); closeSecretModal();
-  window.location.href = "https://www.strava.com/oauth/authorize?client_id=" + STRAVA_CLIENT_ID +
-    "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) +
-    "&response_type=code&approval_prompt=auto&scope=activity:read_all";
+  window.location.href = "https://www.strava.com/oauth/authorize?client_id=" + STRAVA_CLIENT_ID + "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&response_type=code&approval_prompt=auto&scope=activity:read_all";
 }
-
 function handleOAuthCallback() {
-  var params = new URLSearchParams(window.location.search);
-  var code = params.get("code");
+  var params = new URLSearchParams(window.location.search); var code = params.get("code");
   if (!code) return;
   window.history.replaceState({}, document.title, window.location.pathname);
-  if (!state.stravaSecret) { alert("Client secret missing — please connect again."); return; }
-  fetch("https://www.strava.com/oauth/token", {
-    method: "POST", headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ client_id: STRAVA_CLIENT_ID, client_secret: state.stravaSecret, code: code, grant_type: "authorization_code" })
-  })
+  if (!state.stravaSecret) { alert("Client secret missing."); return; }
+  fetch("https://www.strava.com/oauth/token", { method: "POST", headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ client_id: STRAVA_CLIENT_ID, client_secret: state.stravaSecret, code: code, grant_type: "authorization_code" }) })
   .then(function(r) { return r.json(); })
   .then(function(data) {
-    if (data.access_token) {
-      state.stravaToken = data.access_token;
-      state.stravaAthlete = data.athlete ? data.athlete.firstname : "Athlete";
-      saveState(); updateStravaBar(); fetchStravaActivities();
-    } else { alert("Strava auth failed: " + (data.message || "unknown error")); }
-  })
-  .catch(function(e) { alert("Error: " + e.message); });
+    if (data.access_token) { state.stravaToken = data.access_token; state.stravaAthlete = data.athlete ? data.athlete.firstname : "Athlete"; saveState(); updateStravaBar(); fetchStravaActivities(); }
+    else { alert("Strava auth failed: " + (data.message || "unknown")); }
+  }).catch(function(e) { alert("Error: " + e.message); });
 }
-
 function fetchStravaActivities() {
-  var now = new Date();
-  var day = now.getDay();
-  var diff = (day === 0) ? -6 : 1 - day;
+  var now = new Date(); var day = now.getDay(); var diff = (day === 0) ? -6 : 1 - day;
   var monday = new Date(now); monday.setDate(now.getDate() + diff); monday.setHours(0,0,0,0);
   var after = Math.floor(monday.getTime() / 1000);
-
-  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + after + "&per_page=30", {
-    headers: { "Authorization": "Bearer " + state.stravaToken }
-  })
-  .then(function(r) {
-    if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; }
-    return r.json();
-  })
+  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + after + "&per_page=30", { headers: { "Authorization": "Bearer " + state.stravaToken } })
+  .then(function(r) { if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; } return r.json(); })
   .then(function(activities) {
     if (!activities) return;
     state.rides = [null,null,null,null,null,null,null];
     activities.forEach(function(act) {
       if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
-      var d = new Date(act.start_date_local);
-      var dow = d.getDay();
-      var idx = dow === 0 ? 6 : dow - 1;
-      var distMi = (act.distance / 1609.34).toFixed(1);
-      var durMin = Math.round(act.moving_time / 60);
+      var d = new Date(act.start_date_local); var dow = d.getDay(); var idx = dow === 0 ? 6 : dow - 1;
+      var distMi = parseFloat((act.distance / 1609.34).toFixed(1)); var durMin = Math.round(act.moving_time / 60);
       var actType = act.sport_type || act.type || "Ride";
-      if (!state.rides[idx]) {
-        state.rides[idx] = { dist: parseFloat(distMi), dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true };
-      } else {
-        state.rides[idx].dist = parseFloat((state.rides[idx].dist + parseFloat(distMi)).toFixed(1));
-        state.rides[idx].dur += durMin;
-        state.rides[idx].name += " + 1 more";
-      }
+      if (!state.rides[idx]) { state.rides[idx] = { dist: distMi, dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true }; }
+      else { state.rides[idx].dist = parseFloat((state.rides[idx].dist + distMi).toFixed(1)); state.rides[idx].dur += durMin; state.rides[idx].name += " + 1 more"; }
     });
-    saveState(); renderWeek();
-    document.getElementById("week-hint").textContent = "synced from Strava";
-  })
-  .catch(function(e) { console.warn("Strava fetch error", e); });
+    saveState(); renderWeek(); document.getElementById("week-hint").textContent = "synced from Strava";
+  }).catch(function(e) { console.warn("Strava fetch error", e); });
 }
-
 function fetchStravaMonth(offset, callback) {
-  var now = new Date();
-  var y = now.getFullYear();
-  var m = now.getMonth() + offset;
-  while (m < 0) { m += 12; y--; }
-  while (m > 11) { m -= 12; y++; }
-
+  var now = new Date(); var y = now.getFullYear(); var m = now.getMonth() + offset;
+  while (m < 0) { m += 12; y--; } while (m > 11) { m -= 12; y++; }
   var afterTs = Math.floor(new Date(y, m, 1, 0, 0, 0).getTime() / 1000);
   var beforeTs = Math.floor(new Date(y, m+1, 1, 0, 0, 0).getTime() / 1000);
-
   document.getElementById("month-title").textContent = "Loading...";
-
-  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + afterTs + "&before=" + beforeTs + "&per_page=60", {
-    headers: { "Authorization": "Bearer " + state.stravaToken }
-  })
-  .then(function(r) {
-    if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; }
-    return r.json();
-  })
+  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + afterTs + "&before=" + beforeTs + "&per_page=60", { headers: { "Authorization": "Bearer " + state.stravaToken } })
+  .then(function(r) { if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; } return r.json(); })
   .then(function(activities) {
     if (!activities) return;
-    // merge rides into history by week, keeping existing gym data
-    var h = loadHistory();
-    // clear strava rides for all weeks in this month, then re-populate
-    // collect all week keys that fall in this month
-    var weekKeys = {};
-    for (var day = 1; day <= new Date(y, m+1, 0).getDate(); day++) {
-      var wk = getWeekKey(new Date(y, m, day));
-      weekKeys[wk] = true;
-    }
-    // for each week in this month, wipe strava rides only
+    var h = loadHistory(); var weekKeys = {};
+    for (var day = 1; day <= new Date(y, m+1, 0).getDate(); day++) { var wk = getWeekKey(new Date(y, m, day)); weekKeys[wk] = true; }
     Object.keys(weekKeys).forEach(function(wk) {
       var isCurrentWeek = wk === state.weekKey;
       var target = isCurrentWeek ? state : (h[wk] = h[wk] || { completedDays: [false,false,false,false], rides: [null,null,null,null,null,null,null] });
       if (!target.rides) target.rides = [null,null,null,null,null,null,null];
-      // clear only strava-sourced rides
-      for (var i = 0; i < 7; i++) {
-        if (target.rides[i] && target.rides[i].fromStrava) target.rides[i] = null;
-      }
+      for (var i = 0; i < 7; i++) { if (target.rides[i] && target.rides[i].fromStrava) target.rides[i] = null; }
     });
-
     activities.forEach(function(act) {
       if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
-      var d = new Date(act.start_date_local);
-      var wk = getWeekKey(d);
-      var dow = d.getDay();
-      var idx = dow === 0 ? 6 : dow - 1;
-      var distMi = parseFloat((act.distance / 1609.34).toFixed(1));
-      var durMin = Math.round(act.moving_time / 60);
+      var d = new Date(act.start_date_local); var wk = getWeekKey(d); var dow = d.getDay(); var idx = dow === 0 ? 6 : dow - 1;
+      var distMi = parseFloat((act.distance / 1609.34).toFixed(1)); var durMin = Math.round(act.moving_time / 60);
       var actType = act.sport_type || act.type || "Ride";
-
       var isCurrentWeek = wk === state.weekKey;
       var target = isCurrentWeek ? state : (h[wk] = h[wk] || { completedDays: [false,false,false,false], rides: [null,null,null,null,null,null,null] });
       if (!target.rides) target.rides = [null,null,null,null,null,null,null];
-
-      if (!target.rides[idx]) {
-        target.rides[idx] = { dist: distMi, dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true };
-      } else {
-        target.rides[idx].dist = parseFloat((target.rides[idx].dist + distMi).toFixed(1));
-        target.rides[idx].dur += durMin;
-        target.rides[idx].name += " + 1 more";
-      }
+      if (!target.rides[idx]) { target.rides[idx] = { dist: distMi, dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true }; }
+      else { target.rides[idx].dist = parseFloat((target.rides[idx].dist + distMi).toFixed(1)); target.rides[idx].dur += durMin; target.rides[idx].name += " + 1 more"; }
     });
-
-    saveHistory(h);
-    saveState();
-    if (callback) callback();
-  })
-  .catch(function(e) { console.warn("Strava month fetch error", e); if (callback) callback(); });
+    saveHistory(h); saveState(); if (callback) callback();
+  }).catch(function(e) { console.warn("Strava month fetch error", e); if (callback) callback(); });
 }
-
 function updateStravaBar() {
-  var dot = document.getElementById("strava-dot");
-  var txt = document.getElementById("strava-status-text");
-  var btn = document.getElementById("strava-action-btn");
+  var dot = document.getElementById("strava-dot"); var txt = document.getElementById("strava-status-text"); var btn = document.getElementById("strava-action-btn");
   if (state.stravaToken) {
-    dot.className = "strava-dot connected";
-    txt.textContent = "Connected" + (state.stravaAthlete ? " as " + state.stravaAthlete : "");
-    btn.textContent = "Disconnect"; btn.className = "strava-btn disconnect";
-    document.getElementById("week-hint").textContent = "synced from Strava";
-  } else {
-    dot.className = "strava-dot";
-    txt.textContent = "Not connected to Strava";
-    btn.textContent = "Connect"; btn.className = "strava-btn";
-    document.getElementById("week-hint").textContent = "tap ride days to log";
-  }
+    dot.className = "strava-dot connected"; txt.textContent = "Connected" + (state.stravaAthlete ? " as " + state.stravaAthlete : "");
+    btn.textContent = "Disconnect"; btn.className = "strava-btn disconnect"; document.getElementById("week-hint").textContent = "synced from Strava";
+  } else { dot.className = "strava-dot"; txt.textContent = "Not connected to Strava"; btn.textContent = "Connect"; btn.className = "strava-btn"; document.getElementById("week-hint").textContent = "tap ride days to log"; }
 }
 
-// ── manual ride log ───────────────────────────────────────────────────────────
-function openModal(i) {
-  if (state.stravaToken) return;
-  modalDayIndex = i;
-  document.getElementById("modal-title").textContent = WEEK_DAYS[i] + " ride";
-  var ride = state.rides[i] || {};
-  document.getElementById("input-dist").value = ride.dist || "";
-  document.getElementById("input-dur").value = ride.dur || "";
-  document.getElementById("modal-overlay").className = "modal-overlay show";
-}
+// ── manual ride ───────────────────────────────────────────────────────────────
+function openModal(i) { if (state.stravaToken) return; modalDayIndex = i; document.getElementById("modal-title").textContent = WEEK_DAYS[i] + " ride"; var ride = state.rides[i] || {}; document.getElementById("input-dist").value = ride.dist || ""; document.getElementById("input-dur").value = ride.dur || ""; document.getElementById("modal-overlay").className = "modal-overlay show"; }
 function closeModal() { document.getElementById("modal-overlay").className = "modal-overlay"; modalDayIndex = -1; }
-function saveRide() {
-  if (modalDayIndex < 0) return;
-  var dist = parseFloat(document.getElementById("input-dist").value);
-  var dur = parseInt(document.getElementById("input-dur").value);
-  state.rides[modalDayIndex] = { dist: isNaN(dist) ? null : dist, dur: isNaN(dur) ? null : dur };
-  saveState(); closeModal(); renderWeek();
-}
-function clearRide() {
-  if (modalDayIndex < 0) return;
-  state.rides[modalDayIndex] = null;
-  saveState(); closeModal(); renderWeek();
-}
+function saveRide() { if (modalDayIndex < 0) return; var dist = parseFloat(document.getElementById("input-dist").value); var dur = parseInt(document.getElementById("input-dur").value); state.rides[modalDayIndex] = { dist: isNaN(dist) ? null : dist, dur: isNaN(dur) ? null : dur }; saveState(); closeModal(); renderWeek(); }
+function clearRide() { if (modalDayIndex < 0) return; state.rides[modalDayIndex] = null; saveState(); closeModal(); renderWeek(); }
 
-// ── week render ───────────────────────────────────────────────────────────────
+// ── render ────────────────────────────────────────────────────────────────────
 function render() {
   saveState();
-  var di = state.activeDay;
-  var day = DAYS[di];
-
-  var sel = document.getElementById("day-selector");
-  sel.innerHTML = "";
+  var di = state.activeDay; var day = DAYS[di];
+  var sel = document.getElementById("day-selector"); sel.innerHTML = "";
   DAYS.forEach(function(d, i) {
     var btn = document.createElement("button");
     btn.className = "day-btn" + (i === di ? " active" : "");
     if (i === di) { btn.style.borderColor = d.color; btn.style.background = d.lightColor; btn.style.color = d.textColor; }
     btn.innerHTML = '<div class="d-name">' + d.day.slice(0,3).toUpperCase() + '</div><div class="d-label">' + d.label + '</div>' +
       '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px;margin-top:5px;">' +
-        d.muscles.map(function(m) {
-          return '<span style="font-size:8px;font-weight:500;padding:1px 5px;border-radius:20px;background:' + (i === di ? d.textColor + '22' : '#eee') + ';color:' + (i === di ? d.textColor : '#888') + '">' + m + '</span>';
-        }).join('') +
+        d.muscles.map(function(m) { return '<span style="font-size:8px;font-weight:500;padding:1px 5px;border-radius:20px;background:' + (i === di ? d.textColor + '22' : '#eee') + ';color:' + (i === di ? d.textColor : '#888') + '">' + m + '</span>'; }).join('') +
       '</div>' +
       '<div class="done-dot" style="background:' + d.color + ';' + (state.completedDays[i] ? 'display:block' : '') + '"></div>';
-    btn.onclick = (function(idx) { return function() { state.activeDay = idx; render(); }; })(i);
+    btn.onclick = (function(idx) { return function() { state.activeDay = idx; openSwapIndex = -1; render(); }; })(i);
     sel.appendChild(btn);
   });
 
-  var doneCount = state.checked[di].filter(Boolean).length;
+  var doneCount = 0;
+  for (var ei2 = 0; ei2 < day.exercises.length; ei2++) { if (state.checked[di][ei2]) doneCount++; }
   var total = day.exercises.length;
   document.getElementById("hdr-focus").textContent = day.focus;
   document.getElementById("hdr-sub").textContent = day.day + " \u00b7 " + doneCount + "/" + total + " exercises";
+  var bar = document.getElementById("progress-bar"); bar.style.width = Math.round((doneCount/total)*100) + "%"; bar.style.background = day.color;
 
-  var bar = document.getElementById("progress-bar");
-  bar.style.width = Math.round((doneCount/total)*100) + "%";
-  bar.style.background = day.color;
-
-  var list = document.getElementById("ex-list");
-  list.innerHTML = "";
-  day.exercises.forEach(function(ex, ei) {
+  var list = document.getElementById("ex-list"); list.innerHTML = "";
+  day.exercises.forEach(function(defEx, ei) {
+    var ex = getExercise(di, ei);
     var done = state.checked[di][ei];
+    var isSwapped = !!(state.swaps[di] && state.swaps[di][ei]);
+    var swapOpen = openSwapIndex === ei;
+
+    var wrap = document.createElement("div");
+    wrap.className = "ex-wrap";
+
+    // main row
     var row = document.createElement("div");
-    row.className = "ex-row" + (done ? " done" : "");
+    row.className = "ex-row" + (done ? " done" : "") + (swapOpen ? " swap-open" : "");
     if (done) { row.style.borderColor = day.color + "40"; row.style.background = day.lightColor; }
+
     var eqHtml = ex.equipment === "band" ? '<span class="eq-pill eq-band">band</span>' : ex.equipment === "KB" ? '<span class="eq-pill eq-kb">KB</span>' : "";
+    var swappedLabel = isSwapped ? '<span style="font-size:9px;color:#aaa;margin-left:4px;font-style:italic">swapped</span>' : "";
+
     row.innerHTML =
       '<div class="checkbox' + (done ? " checked" : "") + '" style="' + (done ? "background:" + day.color : "") + '">' +
         '<svg width="11" height="8" viewBox="0 0 11 8" fill="none"><path d="M1 4L4 7L10 1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
       '</div>' +
-      '<div class="ex-content"><div><span class="ex-name" style="color:' + (done ? day.textColor : "#111") + '">' + ex.name + '</span>' + eqHtml + '</div>' +
+      '<div class="ex-content"><div><span class="ex-name" style="color:' + (done ? day.textColor : "#111") + '">' + ex.name + '</span>' + eqHtml + swappedLabel + '</div>' +
         '<div class="ex-meta">' + ex.sets + ' sets \u00b7 ' + ex.reps + '</div></div>' +
-      '<a class="demo-btn" href="' + ex.url + '" target="_blank" rel="noopener noreferrer" style="color:' + day.color + ';background:' + day.lightColor + ';border:0.5px solid ' + day.color + '50">Demo</a>';
+      '<div class="ex-actions">' +
+        '<a class="demo-btn" href="' + ex.url + '" target="_blank" rel="noopener noreferrer" style="color:' + day.color + ';background:' + day.lightColor + ';border:0.5px solid ' + day.color + '50">Demo</a>' +
+        '<button class="swap-btn' + (swapOpen ? " active" : "") + '" title="Swap exercise">\u21c4</button>' +
+      '</div>';
+
     row.querySelector(".checkbox").addEventListener("click", (function(dayIdx, exIdx) {
-      return function() {
-        state.checked[dayIdx][exIdx] = !state.checked[dayIdx][exIdx];
-        state.completedDays[dayIdx] = state.checked[dayIdx].every(Boolean);
-        render();
-      };
+      return function() { state.checked[dayIdx][exIdx] = !state.checked[dayIdx][exIdx]; state.completedDays[dayIdx] = state.checked[dayIdx].every(Boolean); render(); };
     })(di, ei));
-    list.appendChild(row);
+
+    row.querySelector(".swap-btn").addEventListener("click", (function(exIdx) {
+      return function(e) { e.stopPropagation(); openSwapIndex = openSwapIndex === exIdx ? -1 : exIdx; render(); };
+    })(ei));
+
+    wrap.appendChild(row);
+
+    // swap panel
+    var panel = document.createElement("div");
+    panel.className = "swap-panel" + (swapOpen ? " show" : "");
+    if (swapOpen) { panel.style.borderColor = "#e8e8e8"; }
+
+    var alts = defEx.alts || [];
+    alts.forEach(function(alt) {
+      var opt = document.createElement("div");
+      opt.className = "swap-option";
+      var altEq = alt.equipment === "band" ? '<span class="eq-pill eq-band">band</span>' : alt.equipment === "KB" ? '<span class="eq-pill eq-kb">KB</span>' : "";
+      opt.innerHTML =
+        '<div class="swap-opt-left">' +
+          '<div class="swap-opt-name">' + alt.name + altEq + '</div>' +
+          '<div class="swap-opt-meta">' + alt.sets + ' sets \u00b7 ' + alt.reps + (alt.note ? ' \u00b7 ' + alt.note : '') + '</div>' +
+        '</div>' +
+        '<button class="swap-use-btn">Use</button>';
+      opt.querySelector(".swap-use-btn").addEventListener("click", (function(a, dayIdx, exIdx) {
+        return function(e) { e.stopPropagation(); swapExercise(dayIdx, exIdx, a); };
+      })(alt, di, ei));
+      panel.appendChild(opt);
+    });
+
+    // reset option if currently swapped
+    if (isSwapped) {
+      var resetOpt = document.createElement("div");
+      resetOpt.className = "swap-option";
+      resetOpt.innerHTML = '<div class="swap-opt-left"><div class="swap-opt-name" style="color:#888">Reset to default</div><div class="swap-opt-meta">' + defEx.name + '</div></div><button class="swap-use-btn" style="background:#888">Reset</button>';
+      resetOpt.querySelector(".swap-use-btn").addEventListener("click", (function(dayIdx, exIdx) {
+        return function(e) { e.stopPropagation(); resetSwap(dayIdx, exIdx); };
+      })(di, ei));
+      panel.appendChild(resetOpt);
+    }
+
+    wrap.appendChild(panel);
+    list.appendChild(wrap);
   });
 
   var msg = document.getElementById("complete-msg");
   if (state.completedDays[di]) {
-    msg.className = "complete-msg show";
-    msg.style.background = day.lightColor; msg.style.borderColor = day.color + "40";
-    document.getElementById("complete-title").style.color = day.textColor;
-    document.getElementById("complete-title").textContent = "Session complete";
+    msg.className = "complete-msg show"; msg.style.background = day.lightColor; msg.style.borderColor = day.color + "40";
+    document.getElementById("complete-title").style.color = day.textColor; document.getElementById("complete-title").textContent = "Session complete";
     document.getElementById("complete-sub").style.color = day.textColor;
     document.getElementById("complete-sub").textContent = di < 3 ? "Next up: " + DAYS[di+1].day + " \u2014 " + DAYS[di+1].focus : "Rest up for Saturday's long ride.";
   } else { msg.className = "complete-msg"; }
 
-  updateStravaBar();
-  renderWeek();
+  updateStravaBar(); renderWeek();
 }
 
 function renderWeek() {
-  var grid = document.getElementById("week-grid");
-  grid.innerHTML = "";
+  var grid = document.getElementById("week-grid"); grid.innerHTML = "";
   var isStravaConnected = !!state.stravaToken;
-
   WEEK_DAYS.forEach(function(d, i) {
-    var gymIdx = i < 4 ? i : null;
-    var isRideDay = RIDE_DAYS.indexOf(i) >= 0;
-    var isLong = i === 5;
-    var isDoneGym = gymIdx !== null && state.completedDays[gymIdx];
-    var ride = state.rides[i] || null;
-
+    var gymIdx = i < 4 ? i : null; var isRideDay = RIDE_DAYS.indexOf(i) >= 0; var isLong = i === 5;
+    var isDoneGym = gymIdx !== null && state.completedDays[gymIdx]; var ride = state.rides[i] || null;
     var bg, borderColor, labelColor, labelText;
-    if (gymIdx !== null) {
-      bg = isDoneGym ? DAYS[gymIdx].color : DAYS[gymIdx].lightColor;
-      borderColor = DAYS[gymIdx].color + "60";
-      labelColor = isDoneGym ? "#fff" : DAYS[gymIdx].textColor;
-      labelText = isDoneGym ? "done" : "D" + (gymIdx+1);
-    } else if (isLong) {
-      bg = ride ? "#1D9E75" : "#FAEEDA"; borderColor = ride ? "#1D9E7580" : "#EF9F27";
-      labelColor = ride ? "#fff" : "#633806"; labelText = "long";
-    } else if (i === 6) {
-      bg = "#f3f3f3"; borderColor = "#e8e8e8"; labelColor = "#aaa"; labelText = "rest";
-    } else {
-      bg = ride ? "#E6F1FB" : "#f3f3f3"; borderColor = ride ? "#378ADD60" : "#e8e8e8";
-      labelColor = ride ? "#185FA5" : "#aaa"; labelText = "ride";
-    }
-
-    var distTag = (ride && ride.dist) ? '<div class="week-box-label" style="color:' + labelColor + ';font-size:10px;font-weight:500">' + ride.dist + ' mi</div>' : "";
+    if (gymIdx !== null) { bg = isDoneGym ? DAYS[gymIdx].color : DAYS[gymIdx].lightColor; borderColor = DAYS[gymIdx].color + "60"; labelColor = isDoneGym ? "#fff" : DAYS[gymIdx].textColor; labelText = isDoneGym ? "done" : "D" + (gymIdx+1); }
+    else if (isLong) { bg = ride ? "#1D9E75" : "#FAEEDA"; borderColor = ride ? "#1D9E7580" : "#EF9F27"; labelColor = ride ? "#fff" : "#633806"; labelText = "long"; }
+    else if (i === 6) { bg = "#f3f3f3"; borderColor = "#e8e8e8"; labelColor = "#aaa"; labelText = "rest"; }
+    else { bg = ride ? "#E6F1FB" : "#f3f3f3"; borderColor = ride ? "#378ADD60" : "#e8e8e8"; labelColor = ride ? "#185FA5" : "#aaa"; labelText = "ride"; }
+    var distTag = (ride && ride.dist) ? '<div class="week-box-label" style="color:' + labelColor + ';font-size:10px">' + ride.dist + ' mi</div>' : "";
     var stravaTag = (ride && ride.fromStrava) ? '<div class="week-box-meta" style="color:#FC4C02">' + (ride.type ? ride.type.replace("Virtual","Virtual ") : "Ride") + '</div>' : "";
-
     var cell = document.createElement("div");
     var clickable = isRideDay && !isStravaConnected;
     cell.className = "week-cell" + (clickable ? " clickable" : "");
-    cell.innerHTML = '<div class="week-day-name">' + d + '</div>' +
-      '<div class="week-box" style="background:' + bg + ';border-color:' + borderColor + (ride && ride.fromStrava && ride.id ? ';cursor:pointer' : '') + '">' +
-        '<div class="week-box-label" style="color:' + labelColor + '">' + labelText + '</div>' + distTag + stravaTag +
-      '</div>';
-
+    cell.innerHTML = '<div class="week-day-name">' + d + '</div><div class="week-box" style="background:' + bg + ';border-color:' + borderColor + (ride && ride.fromStrava && ride.id ? ';cursor:pointer' : '') + '"><div class="week-box-label" style="color:' + labelColor + '">' + labelText + '</div>' + distTag + stravaTag + '</div>';
     if (clickable) cell.addEventListener("click", (function(idx) { return function() { openModal(idx); }; })(i));
-    if (ride && ride.fromStrava && ride.id) {
-      cell.querySelector(".week-box").addEventListener("click", function(e) {
-        e.stopPropagation();
-        window.open("https://www.strava.com/activities/" + ride.id, "_blank");
-      });
-    }
+    if (ride && ride.fromStrava && ride.id) { cell.querySelector(".week-box").addEventListener("click", function(e) { e.stopPropagation(); window.open("https://www.strava.com/activities/" + ride.id, "_blank"); }); }
     grid.appendChild(cell);
   });
 }
@@ -846,12 +779,12 @@ function resetDay() {
   var di = state.activeDay;
   state.checked[di] = state.checked[di].map(function() { return false; });
   state.completedDays[di] = false;
+  openSwapIndex = -1;
   render();
 }
 
 document.getElementById("modal-overlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
 document.getElementById("secret-modal").addEventListener("click", function(e) { if (e.target === this) closeSecretModal(); });
-
 handleOAuthCallback();
 if (state.stravaToken) fetchStravaActivities();
 render();
