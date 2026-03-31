@@ -240,40 +240,40 @@ var STRAVA_CLIENT_ID = "217088";
 var REDIRECT_URI = "https://nastalgia.github.io/workout-dashboard/";
 
 var DAYS = [
-  { day: "Monday", label: "Day 1", focus: "Glute activation", color: "#1D9E75", lightColor: "#E1F5EE", textColor: "#085041",
+  { day: "Monday", label: "Day 1", focus: "Glute activation", muscles: ["Glutes", "Hamstrings", "Lateral hip"], color: "#1D9E75", lightColor: "#E1F5EE", textColor: "#085041",
     exercises: [
-      { name: "Glute bridge", sets: 3, reps: "15", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/49/glute-bridge/" },
-      { name: "Single-leg bridge", sets: 3, reps: "10/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/145/glute-bridge-single-leg-progression/" },
-      { name: "Banded clamshell", sets: 3, reps: "15/side", equipment: "band", url: "https://www.healthline.com/health/fitness/clamshell-exercise" },
-      { name: "Banded lateral walk", sets: 3, reps: "12 steps", equipment: "band", url: "https://blog.nasm.org/lateral-band-walk" },
-      { name: "Donkey kick", sets: 3, reps: "12/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/58/quadruped-hip-extension/" }
+      { name: "Glute bridge", sets: 3, reps: "15", equipment: "", url: "https://www.strengthlog.com/glute-bridge/" },
+      { name: "Single-leg bridge", sets: 3, reps: "10/side", equipment: "", url: "https://www.strengthlog.com/one-legged-glute-bridge/" },
+      { name: "Banded clamshell", sets: 3, reps: "15/side", equipment: "band", url: "https://www.strengthlog.com/clamshell/" },
+      { name: "Banded lateral walk", sets: 3, reps: "12 steps", equipment: "band", url: "https://www.strengthlog.com/lateral-walk-with-band/" },
+      { name: "Donkey kick", sets: 3, reps: "12/side", equipment: "", url: "https://www.strengthlog.com/donkey-kick/" }
     ]
   },
-  { day: "Tuesday", label: "Day 2", focus: "Core stability", color: "#534AB7", lightColor: "#EEEDFE", textColor: "#3C3489",
+  { day: "Tuesday", label: "Day 2", focus: "Core stability", muscles: ["Anti-rotation", "Deep core", "Obliques"], color: "#534AB7", lightColor: "#EEEDFE", textColor: "#3C3489",
     exercises: [
-      { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://blog.nasm.org/dead-bug-exercise" },
-      { name: "Forearm plank", sets: 3, reps: "30-45s", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/20/forearm-plank/" },
-      { name: "Pallof press", sets: 3, reps: "10/side", equipment: "band", url: "https://tonygentilcore.com/2009/12/exercises-you-should-be-doing-pallof-press-variations/" },
-      { name: "Side plank", sets: 3, reps: "20s/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/681/side-plank/" },
-      { name: "Bird dog", sets: 3, reps: "8/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/14/bird-dog/" }
+      { name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://www.strengthlog.com/dead-bug/" },
+      { name: "Forearm plank", sets: 3, reps: "30-45s", equipment: "", url: "https://www.strengthlog.com/plank/" },
+      { name: "Pallof press", sets: 3, reps: "10/side", equipment: "band", url: "https://www.strengthlog.com/pallof-press/" },
+      { name: "Side plank", sets: 3, reps: "20s/side", equipment: "", url: "https://www.strengthlog.com/side-plank/" },
+      { name: "Bird dog", sets: 3, reps: "8/side", equipment: "", url: "https://www.strengthlog.com/bird-dog/" }
     ]
   },
-  { day: "Wednesday", label: "Day 3", focus: "Hip flexor + mobility", color: "#D85A30", lightColor: "#FAECE7", textColor: "#712B13",
+  { day: "Wednesday", label: "Day 3", focus: "Hip flexor + mobility", muscles: ["Hip flexors", "Psoas", "Mobility"], color: "#D85A30", lightColor: "#FAECE7", textColor: "#712B13",
     exercises: [
-      { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://precisionmovement.coach/90-90-hip-stretch/" },
-      { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://backmusclesolutions.com/blogs/the-ql-blawg/psoas-march" },
-      { name: "Standing hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://www.alethahealth.com/en-us/post/best-hip-flexor-strengthening-exercises" },
-      { name: "Kneeling hip flexor stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/432/kneeling-hip-flexor-stretch/" },
-      { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://library.theprehabguys.com/" }
+      { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://www.strengthlog.com/90-90-hip-stretch/" },
+      { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://www.strengthlog.com/psoas-march/" },
+      { name: "Standing hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://www.strengthlog.com/standing-hip-flexion/" },
+      { name: "Kneeling hip flexor stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://www.strengthlog.com/kneeling-hip-flexor-stretch/" },
+      { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://www.strengthlog.com/leg-lowering/" }
     ]
   },
-  { day: "Thursday", label: "Day 4", focus: "Single-leg strength", color: "#3B6D11", lightColor: "#EAF3DE", textColor: "#27500A",
+  { day: "Thursday", label: "Day 4", focus: "Single-leg strength", muscles: ["Quads", "Glutes", "Adductors"], color: "#3B6D11", lightColor: "#EAF3DE", textColor: "#27500A",
     exercises: [
-      { name: "Bulgarian split squat", sets: 3, reps: "8/side", equipment: "KB", url: "https://blog.nasm.org/bulgarian-split-squat" },
-      { name: "Single-leg RDL", sets: 3, reps: "8/side", equipment: "KB", url: "https://www.acefitness.org/resources/everyone/exercise-library/357/single-leg-romanian-deadlift/" },
-      { name: "Step-up", sets: 3, reps: "10/side", equipment: "KB", url: "https://www.acefitness.org/resources/everyone/exercise-library/25/step-up/" },
-      { name: "Lateral lunge", sets: 3, reps: "10/side", equipment: "", url: "https://www.acefitness.org/resources/everyone/exercise-library/32/lateral-lunge/" },
-      { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://library.theprehabguys.com/" }
+      { name: "Bulgarian split squat", sets: 3, reps: "8/side", equipment: "KB", url: "https://www.strengthlog.com/bulgarian-split-squat/" },
+      { name: "Single-leg RDL", sets: 3, reps: "8/side", equipment: "KB", url: "https://www.strengthlog.com/single-leg-romanian-deadlift/" },
+      { name: "Step-up", sets: 3, reps: "10/side", equipment: "KB", url: "https://www.strengthlog.com/step-up/" },
+      { name: "Lateral lunge", sets: 3, reps: "10/side", equipment: "", url: "https://www.strengthlog.com/lateral-lunge/" },
+      { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://www.strengthlog.com/copenhagen-plank/" }
     ]
   }
 ];
@@ -734,6 +734,11 @@ function render() {
     btn.className = "day-btn" + (i === di ? " active" : "");
     if (i === di) { btn.style.borderColor = d.color; btn.style.background = d.lightColor; btn.style.color = d.textColor; }
     btn.innerHTML = '<div class="d-name">' + d.day.slice(0,3).toUpperCase() + '</div><div class="d-label">' + d.label + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;justify-content:center;gap:3px;margin-top:5px;">' +
+        d.muscles.map(function(m) {
+          return '<span style="font-size:8px;font-weight:500;padding:1px 5px;border-radius:20px;background:' + (i === di ? d.textColor + '22' : '#eee') + ';color:' + (i === di ? d.textColor : '#888') + '">' + m + '</span>';
+        }).join('') +
+      '</div>' +
       '<div class="done-dot" style="background:' + d.color + ';' + (state.completedDays[i] ? 'display:block' : '') + '"></div>';
     btn.onclick = (function(idx) { return function() { state.activeDay = idx; render(); }; })(i);
     sel.appendChild(btn);
