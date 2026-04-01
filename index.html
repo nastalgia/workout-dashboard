@@ -710,7 +710,6 @@ function handleOAuthCallback() {
 function processActivitiesIntoArchive(activities) {
   var actArchive = loadActArchive();
   activities.forEach(function(act) {
-    if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
     var d = new Date(act.start_date_local);
     var dk = getDayKey(d);
     if (!actArchive[dk]) actArchive[dk] = [];
@@ -734,12 +733,14 @@ function fetchStravaActivities() {
     if (!activities) return;
     state.rides = [null,null,null,null,null,null,null];
     activities.forEach(function(act) {
-      if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
-      var d = new Date(act.start_date_local); var dow = d.getDay(); var idx = dow === 0 ? 6 : dow - 1;
-      var distMi = parseFloat((act.distance / 1609.34).toFixed(1)); var durMin = Math.round(act.moving_time / 60);
-      var actType = act.sport_type || act.type || "Ride";
-      if (!state.rides[idx]) { state.rides[idx] = { dist: distMi, dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true }; }
-      else { state.rides[idx].dist = parseFloat((state.rides[idx].dist + distMi).toFixed(1)); state.rides[idx].dur += durMin; state.rides[idx].name += " + 1 more"; }
+      var isRide = act.type === "Ride" || act.type === "VirtualRide" || act.sport_type === "Ride";
+      if (isRide) {
+        var d = new Date(act.start_date_local); var dow = d.getDay(); var idx = dow === 0 ? 6 : dow - 1;
+        var distMi = parseFloat((act.distance / 1609.34).toFixed(1)); var durMin = Math.round(act.moving_time / 60);
+        var actType = act.sport_type || act.type || "Ride";
+        if (!state.rides[idx]) { state.rides[idx] = { dist: distMi, dur: durMin, name: act.name, type: actType, id: act.id, fromStrava: true }; }
+        else { state.rides[idx].dist = parseFloat((state.rides[idx].dist + distMi).toFixed(1)); state.rides[idx].dur += durMin; state.rides[idx].name += " + 1 more"; }
+      }
     });
     processActivitiesIntoArchive(activities);
     saveState(); renderWeek(); document.getElementById("week-hint").textContent = "synced from Strava";
@@ -765,8 +766,9 @@ function fetchStravaMonth(offset, callback) {
       for (var i = 0; i < 7; i++) { if (target.rides[i] && target.rides[i].fromStrava) target.rides[i] = null; }
     });
     activities.forEach(function(act) {
-      if (act.type !== "Ride" && act.type !== "VirtualRide" && act.sport_type !== "Ride") return;
       var d = new Date(act.start_date_local); var wk = getWeekKey(d); var dow = d.getDay(); var idx = dow === 0 ? 6 : dow - 1;
+      var isRide = act.type === "Ride" || act.type === "VirtualRide" || act.sport_type === "Ride";
+      if (!isRide) return; // only rides go into the week overview ride slots
       var distMi = parseFloat((act.distance / 1609.34).toFixed(1)); var durMin = Math.round(act.moving_time / 60);
       var actType = act.sport_type || act.type || "Ride";
       var isCurrentWeek = wk === state.weekKey;
