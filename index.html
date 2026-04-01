@@ -112,6 +112,31 @@
   .legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: #888; }
   .legend-swatch { width: 10px; height: 10px; border-radius: 3px; }
 
+  /* recommendation card */
+  .rec-bar { margin-bottom: 16px; }
+  .rec-btn { width: 100%; padding: 10px 14px; border-radius: 10px; border: 0.5px solid #FC4C02; background: #fff; color: #FC4C02; font-size: 12px; font-weight: 500; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; transition: background 0.15s; }
+  .rec-btn:hover { background: #FFF5F0; }
+  .rec-btn.loading { opacity: 0.6; cursor: default; }
+  .rec-card { display: none; margin-bottom: 16px; border-radius: 12px; border: 0.5px solid #FC4C0230; background: #FFF5F0; overflow: hidden; }
+  .rec-card.show { display: block; }
+  .rec-card-header { display: flex; align-items: center; justify-content: space-between; padding: 11px 14px; border-bottom: 0.5px solid #FC4C0220; }
+  .rec-card-title { font-size: 12px; font-weight: 500; color: #993C1D; display: flex; align-items: center; gap: 5px; }
+  .rec-close { background: none; border: none; font-size: 15px; color: #FC4C02; cursor: pointer; padding: 0; line-height: 1; opacity: 0.6; }
+  .rec-rides { padding: 10px 14px; border-bottom: 0.5px solid #FC4C0215; display: flex; gap: 8px; flex-wrap: wrap; }
+  .rec-ride-pill { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: 20px; background: #FC4C0215; color: #993C1D; }
+  .rec-body { padding: 12px 14px; }
+  .rec-score-row { display: flex; gap: 8px; margin-bottom: 12px; }
+  .rec-score-box { flex: 1; padding: 8px 10px; border-radius: 8px; text-align: center; border: 0.5px solid #e8e8e8; background: #fff; }
+  .rec-score-val { font-size: 16px; font-weight: 500; }
+  .rec-score-label { font-size: 9px; color: #aaa; margin-top: 1px; }
+  .rec-section-title { font-size: 10px; font-weight: 500; color: #aaa; letter-spacing: 0.06em; margin-bottom: 8px; }
+  .rec-suggestion { font-size: 12px; color: #712B13; line-height: 1.6; margin-bottom: 12px; }
+  .rec-ex-list { display: flex; flex-direction: column; gap: 6px; }
+  .rec-ex-row { display: flex; align-items: center; gap: 8px; padding: 7px 10px; border-radius: 8px; background: #fff; border: 0.5px solid #FC4C0220; }
+  .rec-ex-dot { width: 6px; height: 6px; border-radius: 50%; background: #FC4C02; flex-shrink: 0; }
+  .rec-ex-name { font-size: 12px; font-weight: 500; color: #111; flex: 1; }
+  .rec-ex-reason { font-size: 10px; color: #888; }
+
   /* day detail panel */
   .day-detail { margin-top: 16px; border-radius: 14px; border: 0.5px solid #e8e8e8; overflow: hidden; background: #fff; }
   .day-detail-header { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px; background: #fafafa; border-bottom: 0.5px solid #e8e8e8; }
@@ -174,6 +199,31 @@
 
   <!-- week view -->
   <div id="week-view">
+    <!-- recommendations -->
+    <div class="rec-bar" id="rec-bar" style="display:none">
+      <button class="rec-btn" id="rec-btn" onclick="getRecommendations()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="#FC4C02"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+        Recommend today's session
+      </button>
+    </div>
+    <div class="rec-card" id="rec-card">
+      <div class="rec-card-header">
+        <div class="rec-card-title">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="#FC4C02"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg>
+          Strava-based recommendation
+        </div>
+        <button class="rec-close" onclick="closeRec()">&#215;</button>
+      </div>
+      <div id="rec-rides" class="rec-rides"></div>
+      <div class="rec-body">
+        <div class="rec-score-row" id="rec-scores"></div>
+        <div class="rec-section-title">TODAY'S FOCUS</div>
+        <div class="rec-suggestion" id="rec-suggestion"></div>
+        <div class="rec-section-title">PRIORITISE THESE</div>
+        <div class="rec-ex-list" id="rec-ex-list"></div>
+      </div>
+    </div>
+
     <div class="day-selector" id="day-selector"></div>
     <div class="header">
       <div><div class="header-focus" id="hdr-focus"></div><div class="header-sub" id="hdr-sub"></div></div>
@@ -280,11 +330,11 @@ var DAYS = [
   },
   { day: "Wednesday", label: "Day 3", focus: "Hip flexor + mobility", muscles: ["Hip flexors", "Psoas", "Mobility"], color: "#D85A30", lightColor: "#FAECE7", textColor: "#712B13",
     exercises: [
-      { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/seated-hip-internal-rotation-stretch", alts: [{ name: "Pigeon stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/pigeon-stretch", note: "Deeper glute stretch" },{ name: "Figure-4 stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/figure-four-stretch", note: "Supine, easier entry" },{ name: "Hip flexor stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/hip-flexor-stretch", note: "Direct hip flexor target" }] },
-      { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/lying-hip-flexion", alts: [{ name: "Mountain climber", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/mountain-climber", note: "Dynamic hip flexor drive" },{ name: "Hanging knee raise", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/hanging-knee-raise", note: "Loaded hip flexion" },{ name: "Lying hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/lying-hip-flexion", note: "Same pattern, no band" }] },
-      { name: "Standing hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/standing-hip-flexion", alts: [{ name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/reverse-lunge", note: "Hip flexor under load" },{ name: "Step-up with knee drive", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/step-up", note: "Functional hip flexion" },{ name: "High knee march", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/high-knee-march", note: "Standing, no band" }] },
+      { name: "90/90 stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/shin-box-hip-flexor", alts: [{ name: "Pigeon stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/pigeon-stretch", note: "Deeper glute stretch" },{ name: "Figure-4 stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/figure-four-stretch", note: "Supine, easier entry" },{ name: "Hip flexor stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/kneeling-hip-flexor-stretch", note: "Direct hip flexor target" }] },
+      { name: "Psoas march", sets: 3, reps: "12/side", equipment: "band", url: "https://thebarbellphysio.com/psoas-march-key-strong-flexible-hip-flexors/", alts: [{ name: "Mountain climber", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/mountain-climber", note: "Dynamic hip flexor drive" },{ name: "Hanging knee raise", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/hanging-knee-raise", note: "Loaded hip flexion" },{ name: "Standing hip flexor stretch", sets: 3, reps: "12/side", equipment: "", url: "https://fitbod.me/exercises/standing-hip-flexor-stretch", note: "Standing variation" }] },
+      { name: "Standing hip flexion", sets: 3, reps: "12/side", equipment: "band", url: "https://fitbod.me/exercises/standing-hip-flexor-stretch", alts: [{ name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/reverse-lunge", note: "Hip flexor under load" },{ name: "Step-up with knee drive", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/step-up", note: "Functional hip flexion" },{ name: "Standing hip circle", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/standing-hip-circle", note: "Dynamic mobility variation" }] },
       { name: "Kneeling hip flexor stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/kneeling-hip-flexor-stretch", alts: [{ name: "Couch stretch", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/couch-stretch", note: "Deeper quad + hip flexor" },{ name: "Low lunge", sets: 2, reps: "60s/side", equipment: "", url: "https://fitbod.me/exercises/low-lunge", note: "Dynamic entry" },{ name: "Hip flexor stretch", sets: 2, reps: "45s/side", equipment: "", url: "https://fitbod.me/exercises/hip-flexor-stretch", note: "Standing variation" }] },
-      { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/lying-leg-raise", alts: [{ name: "Hanging leg raise", sets: 3, reps: "8", equipment: "", url: "https://fitbod.me/exercises/hanging-knee-raise", note: "More advanced" },{ name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/dead-bug", note: "Adds arm movement" },{ name: "Reverse crunch", sets: 3, reps: "12", equipment: "", url: "https://fitbod.me/exercises/reverse-crunch", note: "Pelvic tilt focus" }] }
+      { name: "Supine leg lowering", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/leg-raise", alts: [{ name: "Hanging leg raise", sets: 3, reps: "8", equipment: "", url: "https://fitbod.me/exercises/hanging-knee-raise", note: "More advanced" },{ name: "Dead bug", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/dead-bug", note: "Adds arm movement" },{ name: "Reverse crunch", sets: 3, reps: "12", equipment: "", url: "https://fitbod.me/exercises/reverse-crunch", note: "Pelvic tilt focus" }] }
     ]
   },
   { day: "Thursday", label: "Day 4", focus: "Single-leg strength", muscles: ["Quads", "Glutes", "Adductors"], color: "#3B6D11", lightColor: "#EAF3DE", textColor: "#27500A",
@@ -292,8 +342,8 @@ var DAYS = [
       { name: "Bulgarian split squat", sets: 3, reps: "8/side", equipment: "KB", url: "https://fitbod.me/exercises/bulgarian-split-squat", alts: [{ name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/reverse-lunge", note: "Easier balance" },{ name: "Split squat", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/split-squat", note: "Static, no elevation" },{ name: "Dumbbell lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-lunge", note: "More quad emphasis" }] },
       { name: "Single-leg RDL", sets: 3, reps: "8/side", equipment: "KB", url: "https://fitbod.me/exercises/single-leg-romanian-deadlift", alts: [{ name: "Romanian deadlift", sets: 3, reps: "10", equipment: "KB", url: "https://fitbod.me/exercises/romanian-deadlift", note: "Bilateral version" },{ name: "Dumbbell deadlift", sets: 3, reps: "10", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-deadlift", note: "More stable hinge" },{ name: "Good morning", sets: 3, reps: "10", equipment: "", url: "https://fitbod.me/exercises/good-morning", note: "Bodyweight hip hinge" }] },
       { name: "Step-up", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/step-up", alts: [{ name: "Box jump", sets: 3, reps: "6", equipment: "", url: "https://fitbod.me/exercises/box-jump", note: "Explosive version" },{ name: "Barbell step-up", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/barbell-step-up", note: "Heavier loaded option" },{ name: "Reverse lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/reverse-lunge", note: "Similar single-leg pattern" }] },
-      { name: "Lateral lunge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/lateral-lunge", alts: [{ name: "Cossack squat", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/cossack-squat", note: "Deeper adductor stretch" },{ name: "Sumo squat", sets: 3, reps: "12", equipment: "KB", url: "https://fitbod.me/exercises/sumo-squat", note: "Wide stance bilateral" },{ name: "Dumbbell lateral lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-lateral-lunge", note: "Adds load" }] },
-      { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://fitbod.me/exercises/copenhagen-plank", alts: [{ name: "Side plank", sets: 3, reps: "25s/side", equipment: "", url: "https://fitbod.me/exercises/side-bridge", note: "Easier regression" },{ name: "Side plank leg lift", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/side-plank-leg-lift", note: "Abductor emphasis" },{ name: "Adductor squeeze", sets: 3, reps: "15", equipment: "", url: "https://fitbod.me/exercises/adductor-squeeze", note: "Isolated adductor work" }] }
+      { name: "Lateral lunge", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/side-lunge", alts: [{ name: "Cossack squat", sets: 3, reps: "8/side", equipment: "", url: "https://fitbod.me/exercises/cossack-squat", note: "Deeper adductor stretch" },{ name: "Sumo squat", sets: 3, reps: "12", equipment: "KB", url: "https://fitbod.me/exercises/sumo-squat", note: "Wide stance bilateral" },{ name: "Dumbbell lateral lunge", sets: 3, reps: "10/side", equipment: "KB", url: "https://fitbod.me/exercises/dumbbell-lateral-lunge", note: "Adds load" }] },
+      { name: "Copenhagen plank", sets: 3, reps: "15s/side", equipment: "", url: "https://e3rehab.com/how-to-perform-copenhagen-planks/", alts: [{ name: "Side plank", sets: 3, reps: "25s/side", equipment: "", url: "https://fitbod.me/exercises/side-bridge", note: "Easier regression" },{ name: "Side plank leg lift", sets: 3, reps: "10/side", equipment: "", url: "https://fitbod.me/exercises/side-plank-leg-lift", note: "Abductor emphasis" },{ name: "Adductor squeeze", sets: 3, reps: "15", equipment: "", url: "https://fitbod.me/exercises/adductor-squeeze", note: "Isolated adductor work" }] }
     ]
   }
 ];
@@ -730,6 +780,7 @@ function updateStravaBar() {
   var dot = document.getElementById("strava-dot"); var txt = document.getElementById("strava-status-text"); var btn = document.getElementById("strava-action-btn");
   if (state.stravaToken) { dot.className = "strava-dot connected"; txt.textContent = "Connected" + (state.stravaAthlete ? " as " + state.stravaAthlete : ""); btn.textContent = "Disconnect"; btn.className = "strava-btn disconnect"; document.getElementById("week-hint").textContent = "synced from Strava"; }
   else { dot.className = "strava-dot"; txt.textContent = "Not connected to Strava"; btn.textContent = "Connect"; btn.className = "strava-btn"; document.getElementById("week-hint").textContent = "tap ride days to log"; }
+  updateRecBar();
 }
 
 // ── manual ride ───────────────────────────────────────────────────────────────
@@ -833,6 +884,168 @@ function resetDay() {
 
 document.getElementById("modal-overlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
 document.getElementById("secret-modal").addEventListener("click", function(e) { if (e.target === this) closeSecretModal(); });
+// ── strava recommendations ────────────────────────────────────────────────────
+function closeRec() {
+  document.getElementById("rec-card").className = "rec-card";
+}
+
+function updateRecBar() {
+  document.getElementById("rec-bar").style.display = state.stravaToken ? "block" : "none";
+}
+
+function getRecommendations() {
+  if (!state.stravaToken) return;
+  var btn = document.getElementById("rec-btn");
+  btn.className = "rec-btn loading";
+  btn.textContent = "Analysing your rides...";
+
+  var now = new Date();
+  var since = new Date(now); since.setHours(now.getHours() - 48); since.setMinutes(0); since.setSeconds(0);
+  var after = Math.floor(since.getTime() / 1000);
+
+  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + after + "&per_page=10", {
+    headers: { "Authorization": "Bearer " + state.stravaToken }
+  })
+  .then(function(r) {
+    if (r.status === 401) { state.stravaToken = null; saveState(); updateStravaBar(); return null; }
+    return r.json();
+  })
+  .then(function(activities) {
+    btn.className = "rec-btn";
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#FC4C02"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg> Recommend today\'s session';
+    if (!activities || activities.length === 0) {
+      showRecResult([], 0, 0, 0);
+      return;
+    }
+    var rides = activities.filter(function(a) { return a.type === "Ride" || a.type === "VirtualRide" || a.sport_type === "Ride"; });
+    var totalDist = 0; var totalElev = 0; var totalTime = 0;
+    rides.forEach(function(r) {
+      totalDist += r.distance || 0;
+      totalElev += r.total_elevation_gain || 0;
+      totalTime += r.moving_time || 0;
+    });
+    showRecResult(rides, totalDist / 1609.34, totalElev * 3.281, totalTime / 60);
+  })
+  .catch(function(e) {
+    btn.className = "rec-btn";
+    btn.innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="#FC4C02"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg> Recommend today\'s session';
+    console.warn("Rec fetch error", e);
+  });
+}
+
+function showRecResult(rides, distMi, elevFt, durMin) {
+  // ── score ride load ───────────────────────────────────────────────────────
+  // distance score 0-10
+  var dScore = Math.min(10, distMi / 4);
+  // elevation score 0-10 (every 100ft = 1 point)
+  var eScore = Math.min(10, elevFt / 100);
+  // duration score 0-10 (every 15min = 1 point)
+  var tScore = Math.min(10, durMin / 15);
+  // combined fatigue 0-10
+  var fatigue = Math.min(10, (dScore * 0.4) + (eScore * 0.35) + (tScore * 0.25));
+  var fatigueRound = Math.round(fatigue * 10) / 10;
+
+  // ── build recommendation ──────────────────────────────────────────────────
+  var di = state.activeDay;
+  var dayName = DAYS[di].day;
+  var suggestion, priorityExs;
+
+  if (rides.length === 0) {
+    suggestion = "No rides in the last 48 hours. You're fresh — follow the standard plan at full intensity today.";
+    priorityExs = [];
+  } else if (fatigue >= 7.5) {
+    // heavy load
+    suggestion = "Your recent rides show significant load — " + distMi.toFixed(1) + " mi and " + Math.round(elevFt) + " ft of climbing. Hip flexors and glutes will be fatigued. Scale back intensity today: consider switching to Day 3 (hip flexor + mobility) if " + dayName + " is a strength day, or reduce sets by one across the board.";
+    priorityExs = [
+      { name: "90/90 stretch", reason: "Restores hip rotation after climbing", url: "https://fitbod.me/exercises/shin-box-hip-flexor" },
+      { name: "Kneeling hip flexor stretch", reason: "Counters hip flexor tightness from riding", url: "https://fitbod.me/exercises/kneeling-hip-flexor-stretch" },
+      { name: "Glute bridge", reason: "Low-load glute activation only", url: "https://fitbod.me/exercises/glute-bridge" },
+      { name: "Dead bug", reason: "Core stability without leg fatigue", url: "https://fitbod.me/exercises/dead-bug" }
+    ];
+  } else if (fatigue >= 4.5) {
+    // moderate load
+    suggestion = "Moderate ride load in the last 48 hours (" + distMi.toFixed(1) + " mi). Proceed with today's plan but warm up thoroughly. Prioritise hip flexor mobility before any strength work and keep rest periods full between sets.";
+    priorityExs = [
+      { name: "90/90 stretch", reason: "Do this before anything else", url: "https://fitbod.me/exercises/shin-box-hip-flexor" },
+      { name: "Psoas march", reason: "Activates hip flexors post-ride", url: "https://thebarbellphysio.com/psoas-march-key-strong-flexible-hip-flexors/" },
+      { name: "Glute bridge", reason: "Wake up glutes before loading", url: "https://fitbod.me/exercises/glute-bridge" }
+    ];
+    if (elevFt > 500) {
+      priorityExs.push({ name: "Kneeling hip flexor stretch", reason: "Elevation loading tightens hip flexors", url: "https://fitbod.me/exercises/kneeling-hip-flexor-stretch" });
+    }
+  } else if (fatigue >= 2) {
+    // light load
+    suggestion = "Light ride load recently (" + distMi.toFixed(1) + " mi). Legs should be recovered — run the standard plan at full intensity. A quick glute activation set before starting is all you need.";
+    priorityExs = [
+      { name: "Glute bridge", reason: "Quick activation warmup", url: "https://fitbod.me/exercises/glute-bridge" },
+      { name: "Banded clamshell", reason: "Prime lateral hips before loading", url: "https://fitbod.me/exercises/clamshell" }
+    ];
+  } else {
+    // very light / no load
+    suggestion = "Very easy recent riding. No significant fatigue to account for. Full plan at normal intensity — good day for a personal best on Day 4 lifts.";
+    priorityExs = [];
+  }
+
+  // ── render rides pills ────────────────────────────────────────────────────
+  var ridesEl = document.getElementById("rec-rides");
+  ridesEl.innerHTML = "";
+  if (rides.length === 0) {
+    var noRide = document.createElement("span");
+    noRide.className = "rec-ride-pill";
+    noRide.textContent = "No rides in last 48h";
+    ridesEl.appendChild(noRide);
+  } else {
+    rides.forEach(function(r) {
+      var pill = document.createElement("span");
+      pill.className = "rec-ride-pill";
+      var d = parseFloat((r.distance / 1609.34).toFixed(1));
+      var e = Math.round((r.total_elevation_gain || 0) * 3.281);
+      pill.textContent = r.name + " \u00b7 " + d + "mi" + (e > 0 ? " \u00b7 " + e + "ft" : "");
+      ridesEl.appendChild(pill);
+    });
+  }
+
+  // ── render scores ─────────────────────────────────────────────────────────
+  var scoresEl = document.getElementById("rec-scores");
+  scoresEl.innerHTML = "";
+  var scoreColor = fatigue >= 7.5 ? "#E24B4A" : fatigue >= 4.5 ? "#BA7517" : "#1D9E75";
+  var scoreLabel = fatigue >= 7.5 ? "Heavy" : fatigue >= 4.5 ? "Moderate" : fatigue >= 2 ? "Light" : "Fresh";
+  var metrics = [
+    { val: distMi > 0 ? distMi.toFixed(1) + " mi" : "—", label: "Distance" },
+    { val: elevFt > 0 ? Math.round(elevFt) + " ft" : "—", label: "Elevation" },
+    { val: scoreLabel, label: "Load", color: scoreColor }
+  ];
+  metrics.forEach(function(m) {
+    var box = document.createElement("div");
+    box.className = "rec-score-box";
+    box.innerHTML = '<div class="rec-score-val" style="color:' + (m.color || "#111") + '">' + m.val + '</div><div class="rec-score-label">' + m.label + '</div>';
+    scoresEl.appendChild(box);
+  });
+
+  // ── render suggestion ─────────────────────────────────────────────────────
+  document.getElementById("rec-suggestion").textContent = suggestion;
+
+  // ── render exercise priorities ────────────────────────────────────────────
+  var exEl = document.getElementById("rec-ex-list");
+  exEl.innerHTML = "";
+  if (priorityExs.length === 0) {
+    exEl.innerHTML = '<div style="font-size:12px;color:#aaa;padding:4px 0">Full plan — no specific adjustments needed.</div>';
+  } else {
+    priorityExs.forEach(function(ex) {
+      var row = document.createElement("div");
+      row.className = "rec-ex-row";
+      row.innerHTML = '<div class="rec-ex-dot"></div><div class="rec-ex-name">' + ex.name + '</div><div class="rec-ex-reason">' + ex.reason + '</div>';
+      if (ex.url) {
+        row.style.cursor = "pointer";
+        row.addEventListener("click", function() { window.open(ex.url, "_blank"); });
+      }
+      exEl.appendChild(row);
+    });
+  }
+
+  document.getElementById("rec-card").className = "rec-card show";
+}
+
 handleOAuthCallback();
 if (state.stravaToken) fetchStravaActivities();
 render();
