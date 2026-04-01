@@ -72,6 +72,10 @@
   .complete-msg.show { display: block; }
   .complete-title { font-size: 14px; font-weight: 500; }
   .complete-sub { font-size: 12px; opacity: 0.75; margin-top: 2px; }
+  .strava-log-btn { margin-top: 10px; display: inline-flex; align-items: center; gap: 5px; padding: 7px 14px; border-radius: 8px; border: none; background: #FC4C02; color: #fff; font-size: 11px; font-weight: 500; cursor: pointer; }
+  .strava-log-btn:disabled { opacity: 0.5; cursor: default; }
+  .strava-log-btn.success { background: #1D9E75; }
+  .strava-log-btn.no-activity { background: #888; }
 
   .week-overview { margin-top: 20px; padding: 14px; border-radius: 10px; background: #fafafa; border: 0.5px solid #e8e8e8; }
   .week-overview-hdr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; }
@@ -688,7 +692,7 @@ function submitSecret() {
   var secret = document.getElementById("input-secret").value.trim();
   if (!secret) { alert("Please enter your Client Secret."); return; }
   state.stravaSecret = secret; saveState(); closeSecretModal();
-  window.location.href = "https://www.strava.com/oauth/authorize?client_id=" + STRAVA_CLIENT_ID + "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&response_type=code&approval_prompt=auto&scope=activity:read_all";
+  window.location.href = "https://www.strava.com/oauth/authorize?client_id=" + STRAVA_CLIENT_ID + "&redirect_uri=" + encodeURIComponent(REDIRECT_URI) + "&response_type=code&approval_prompt=auto&scope=activity:read_all,activity:write";
 }
 function handleOAuthCallback() {
   var params = new URLSearchParams(window.location.search); var code = params.get("code");
@@ -851,7 +855,32 @@ function render() {
     document.getElementById("complete-title").style.color = day.textColor; document.getElementById("complete-title").textContent = "Session complete";
     document.getElementById("complete-sub").style.color = day.textColor;
     document.getElementById("complete-sub").textContent = di < 3 ? "Next up: " + DAYS[di+1].day + " \u2014 " + DAYS[di+1].focus : "Rest up for Saturday's long ride.";
-  } else { msg.className = "complete-msg"; }
+    // strava log button
+    var logBtnWrap = document.getElementById("complete-strava-btn");
+    if (!logBtnWrap) {
+      logBtnWrap = document.createElement("div");
+      logBtnWrap.id = "complete-strava-btn";
+      logBtnWrap.style.marginTop = "10px";
+      msg.appendChild(logBtnWrap);
+    }
+    logBtnWrap.innerHTML = "";
+    if (state.stravaToken) {
+      var alreadyLogged = state.stravaLogged && state.stravaLogged[state.weekKey + "-" + di];
+      var logBtn = document.createElement("button");
+      logBtn.className = "strava-log-btn" + (alreadyLogged ? " success" : "");
+      if (alreadyLogged) {
+        logBtn.innerHTML = '\u2713 Logged to Strava &middot; <a href="https://www.strava.com/activities/' + alreadyLogged + '" target="_blank" style="color:#fff;text-decoration:underline">view</a>';
+      } else {
+        logBtn.innerHTML = stravaLogBtnHTML();
+        logBtn.addEventListener("click", (function(dayIdx, b) { return function() { logSessionToStrava(dayIdx, b); }; })(di, logBtn));
+      }
+      logBtnWrap.appendChild(logBtn);
+    }
+  } else {
+    msg.className = "complete-msg";
+    var old = document.getElementById("complete-strava-btn");
+    if (old) old.remove();
+  }
   updateStravaBar(); renderWeek();
 }
 
@@ -874,6 +903,94 @@ function renderWeek() {
     if (ride && ride.fromStrava && ride.id) { cell.querySelector(".week-box").addEventListener("click", function(e) { e.stopPropagation(); window.open("https://www.strava.com/activities/" + ride.id, "_blank"); }); }
     grid.appendChild(cell);
   });
+}
+
+// ── strava session logging ────────────────────────────────────────────────────
+function buildSessionDescription(di) {
+  var day = DAYS[di];
+  var lines = [];
+  lines.push("\uD83D\uDCAA " + day.label + " \u2014 " + day.focus);
+  lines.push("");
+  day.exercises.forEach(function(defEx, ei) {
+    var ex = getExercise(di, ei);
+    var done = state.checked[di][ei];
+    var mark = done ? "\u2713" : "\u25CB";
+    lines.push(mark + " " + ex.name + " \u00b7 " + ex.sets + " \u00d7 " + ex.reps);
+  });
+  var doneCount = state.checked[di].filter(Boolean).length;
+  lines.push("");
+  lines.push(doneCount + "/" + day.exercises.length + " exercises completed");
+  lines.push("Logged via workout dashboard");
+  return lines.join("\n");
+}
+
+function logSessionToStrava(di, btn) {
+  if (!state.stravaToken) return;
+  btn.disabled = true;
+  btn.textContent = "Finding activity...";
+
+  // find today's strava activity
+  var today = new Date(); today.setHours(0,0,0,0);
+  var after = Math.floor(today.getTime() / 1000);
+  var before = Math.floor((today.getTime() + 86400000) / 1000);
+
+  fetch("https://www.strava.com/api/v3/athlete/activities?after=" + after + "&before=" + before + "&per_page=10", {
+    headers: { "Authorization": "Bearer " + state.stravaToken }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(activities) {
+    if (!activities || activities.length === 0) {
+      // no activity today — still push as a manual activity? No — just notify
+      btn.disabled = false;
+      btn.className = "strava-log-btn no-activity";
+      btn.textContent = "No Strava activity found today";
+      setTimeout(function() {
+        btn.className = "strava-log-btn";
+        btn.disabled = false;
+        btn.innerHTML = stravaLogBtnHTML();
+      }, 3000);
+      return;
+    }
+    // pick the most recent activity today
+    var act = activities[0];
+    var desc = buildSessionDescription(di);
+    // append to existing description if present
+    if (act.description && act.description.trim().length > 0) {
+      desc = act.description.trim() + "\n\n" + desc;
+    }
+    btn.textContent = "Updating activity...";
+    return fetch("https://www.strava.com/api/v3/activities/" + act.id, {
+      method: "PUT",
+      headers: { "Authorization": "Bearer " + state.stravaToken, "Content-Type": "application/json" },
+      body: JSON.stringify({ description: desc })
+    })
+    .then(function(r) { return r.json(); })
+    .then(function(updated) {
+      if (updated.id) {
+        btn.className = "strava-log-btn success";
+        btn.innerHTML = '\u2713 Logged to <a href="https://www.strava.com/activities/' + updated.id + '" target="_blank" style="color:#fff;text-decoration:underline">' + act.name + '</a>';
+        btn.disabled = false;
+        // mark this day as strava-logged in state
+        if (!state.stravaLogged) state.stravaLogged = {};
+        state.stravaLogged[state.weekKey + "-" + di] = updated.id;
+        saveState();
+      } else {
+        throw new Error("Update failed");
+      }
+    });
+  })
+  .catch(function(e) {
+    console.warn("Strava log error", e);
+    btn.disabled = false;
+    btn.className = "strava-log-btn";
+    btn.innerHTML = stravaLogBtnHTML();
+    btn.textContent = "Failed — try again";
+    setTimeout(function() { btn.innerHTML = stravaLogBtnHTML(); }, 3000);
+  });
+}
+
+function stravaLogBtnHTML() {
+  return '<svg width="11" height="11" viewBox="0 0 24 24" fill="#fff"><path d="M15.387 17.944l-2.089-4.116h-3.065L15.387 24l5.15-10.172h-3.066m-7.008-5.599l2.836 5.598h4.172L10.463 0l-7 13.828h4.169"/></svg> Log to Strava';
 }
 
 function resetDay() {
