@@ -309,6 +309,19 @@
   </div>
 </div>
 
+<!-- activity picker modal -->
+<div class="modal-overlay" id="act-pick-modal">
+  <div class="modal">
+    <div class="modal-title">Choose activity</div>
+    <div class="modal-sub">Select which activity to attach the session to</div>
+    <div class="act-pick-list" id="act-pick-list"></div>
+    <div class="modal-actions">
+      <button class="modal-cancel" onclick="closeActPicker()">Cancel</button>
+      <button class="modal-save" id="act-pick-confirm" onclick="confirmActPick()">Attach session</button>
+    </div>
+  </div>
+</div>
+
 <script>
 var STRAVA_CLIENT_ID = "217088";
 var REDIRECT_URI = "https://nastalgia.github.io/workout-dashboard/";
@@ -1003,6 +1016,7 @@ function resetDay() {
 
 document.getElementById("modal-overlay").addEventListener("click", function(e) { if (e.target === this) closeModal(); });
 document.getElementById("secret-modal").addEventListener("click", function(e) { if (e.target === this) closeSecretModal(); });
+document.getElementById("act-pick-modal").addEventListener("click", function(e) { if (e.target === this) closeActPicker(); });
 // ── strava recommendations ────────────────────────────────────────────────────
 function closeRec() {
   document.getElementById("rec-card").className = "rec-card";
